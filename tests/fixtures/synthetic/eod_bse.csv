@@ -1,0 +1,3 @@
+trade_date,exchange,instrument_id,symbol,open,high,low,close,volume,turnover,price_unit,volume_unit,turnover_unit
+2024-01-05,BSE,BSE-500,ALPHA,101,104,100,103,500,51500,INR_PER_SHARE,SHARES,INR
+2024-01-05,BSE,BSE-600,BETA,201,206,199,203,700,142100,INR_PER_SHARE,SHARES,INR

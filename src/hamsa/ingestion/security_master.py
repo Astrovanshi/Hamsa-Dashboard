@@ -22,7 +22,6 @@ def _listing_id(row: ListingCandidate) -> str:
     key = "|".join((
         row.exchange.value,
         row.exchange_instrument_id.strip(),
-        row.effective_from.isoformat(),
         (row.isin or "").strip().upper(),
     ))
     return sha256(key.encode("utf-8")).hexdigest()

@@ -1,11 +1,31 @@
 # HAMSA architecture and data boundaries
 
+HAMSA is a local **Investment Research and Portfolio Intelligence System**. The
+original end-of-day opportunity screener remains a core module, with its five
+planned discovery engines (Compounders, Earnings Inflection, Capex Conversion,
+Cash Quality, and Extreme Sell-Side Liquidity). Research and portfolio modules
+consume the same sourced, point-in-time data while remaining independently
+reviewable. No module produces automatic buy/sell recommendations.
+
 ## Identity layers
 
 - `issuer_entity` is a stable internal identity for a legal issuer. Routine symbol or ISIN changes do not create a new issuer entity; sourced, effective-dated mapping revisions retain that ID.
 - `equity_security` represents a specific share security. Its ISIN assignments are effective-dated and source-backed. NSE and BSE listings for the same ISIN resolve to the same security.
 - `exchange_listing` is venue-specific and retains the exchange instrument code, symbol/series revisions, and active/suspended/delisted/relisted lifecycle.
+- A listing identity is scoped to exchange, instrument reference, and security identity; symbol changes remain revisions on the same listing, while a changed ISIN can map to a distinct security/listing without reusing the predecessor's history.
 - A merger, demerger, reorganization, predecessor/successor, or spun-out relationship is a separate sourced and reviewed relationship. It does not merge entity, financial, or price histories. Changed identifiers are never resolved by name similarity.
+- Broker account, mandate, position, and transaction are separate portfolio identities. A position references a company/security and one broker account, and records its investing or trading mandate. The same company can have multiple independent positions, including separate investing and trading positions.
+
+## Product modules and boundaries
+
+- **Opportunity Screener:** the five discovery engines operate on EOD data and configurable, versioned rules. Their calculations expose exact inputs, formula, source, venue policy, and as-of date. They identify research candidates and never issue buy/sell recommendations.
+- **Company Intelligence Dossier:** company-level business thesis, Hamsa 11 human assessments, evidence citations, financial/capacity history, dated triggers, thesis killers, and review history. Hamsa 11 statuses are Pass / Unproven / Fail and remain human-entered; evidence and review records are append-only.
+- **Portfolio Intelligence:** locally imported user-supplied broker CSV holdings and tradebooks, supporting multiple brokers and accounts. Reconstructed positions derive from immutable transactions and reviewed corporate actions. Holdings snapshots reconcile against reconstructed positions; they never fill gaps in transaction history. No broker API or credential storage is in scope.
+- **Position and Capital Allocation Monitor:** a position belongs to one company/security, account, and mandate, and has its own thesis, entry history, risk rules, and exit logic. Capital deployments, trims, re-entries, exits, sizing, concentration, alternatives, recycling, status, and checkpoints are tracked per position. Investing/trading P&L and capital flows remain separate unless the user explicitly requests a consolidated view.
+- **Performance Analytics:** realized/unrealized return, average cost, drawdown/recovery, account and position attribution, capital turnover, and recycling efficiency. XIRR or time-weighted returns are selected where their cash-flow assumptions fit and are explained with calculation inputs.
+- **Market and Event Intelligence:** sourced exchange filings/results, ownership changes, block/bulk deals, corporate actions, and company milestones, with publication-time eligibility and reviewed event classification.
+
+Company-level research is distinct from position-level decisions. A company dossier may inform several independent positions, but a position's mandate, thesis, entry history, risk limits, and exit logic are never merged. Consolidation is an explicit presentation choice and preserves constituent account/mandate attribution.
 
 ## Temporal and as-reported rules
 
@@ -24,6 +44,8 @@ Every financial revision retains `period_end`, source document date, publication
 Raw EOD prices and venue-specific delivery observations are append-only. Splits, bonuses, rights, mergers, demergers, identifier/symbol changes, suspensions, delistings, and relistings are corporate-action event revisions with separately stored announcement/publication timestamp, ex-date, record date, and effective date.
 
 Adjustment factors are separate versioned records with formula version, complete event terms, reviewer approval, publication availability, and all input/source references. No factor is produced when terms are incomplete or methodology is unreviewed. A historical screen can use only factors public by its cutoff and effective by its date. A retrospective return series may use subsequently confirmed factors, with `retrospective` mode recorded. Adjustments always derive a view; raw prices are never overwritten. Merger/demerger histories remain separate unless a reviewed calculation explicitly defines a linked return.
+
+Portfolio reconstruction applies corporate actions only through sourced, reviewed transaction/reconstruction rules. Unresolved terms or successor mappings create reconciliation exceptions; they do not silently rewrite predecessor positions or join successor histories.
 
 ## Venue and liquidity policy
 
@@ -47,6 +69,9 @@ Canonical units are INR/share for prices, INR for monetary amounts and turnover,
 - SQLite stores app settings and the append-only human dossier review ledger.
 - `providers/` will contain replaceable NSE/BSE/company adapters; ingestion consumes adapter-neutral records.
 - `domain/`, `ingestion/`, `storage/`, and `screening/` remain independent of Streamlit.
+- Future portfolio modules will use separate company/security, broker/account, position, and transaction repositories. A reconstruction service will consume immutable transactions plus versioned corporate-action rules; a reconciliation service will compare results with broker holdings snapshots without fabricating trades.
+- Local CSV import is the initial broker boundary. Imported originals, checksums, parser/extraction provenance, row-level quarantine, and user-selected account/mandate mapping are retained. The application stores no broker credentials and makes no broker API calls in this scope.
+- Dossier evidence links to source documents and observations; portfolio analytics links to position transactions, cash flows, and reconstruction version. Neither changes the five-engine screening boundary.
 - No provider, dashboard, or five screening engines are implemented in this milestone.
 
 Raw data, local databases, secrets, credentials, keys/certificates, logs, caches, and virtual environments are excluded by `.gitignore`. Only code, SQL schemas, docs, policy examples, and synthetic fixtures belong in Git.

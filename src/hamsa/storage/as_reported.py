@@ -27,6 +27,7 @@ def as_reported_snapshot(
     as_of_session: date,
     mode: AvailabilityMode,
     calendar: Calendar,
+    parser_version: str | None = None,
 ) -> tuple[FinancialObservationRevision, ...]:
     """Return eligible latest revision-chain leaves without hiding conflicts.
 
@@ -40,6 +41,8 @@ def as_reported_snapshot(
     cutoff = eod_cutoff_for_session(as_of_session)
     eligible: list[FinancialObservationRevision] = []
     for row in revisions:
+        if parser_version is not None and row.parser_version != parser_version:
+            continue
         public_session = first_eligible_session(
             PublicAvailability(row.publication_date, row.published_at), calendar
         )

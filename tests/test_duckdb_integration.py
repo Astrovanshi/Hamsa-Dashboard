@@ -1,6 +1,7 @@
 """Integration tests executed by the pinned DuckDB 2.0 Python engine."""
 
 from datetime import date, datetime, timedelta, timezone
+from dataclasses import replace
 from decimal import Decimal
 from hashlib import sha256
 from pathlib import Path
@@ -55,7 +56,11 @@ class DuckDBSchemaIntegrationTests(TestCase):
             [file_id, f"archive-{suffix}.bin", self.checksum(f"file-{suffix}"), f"archive/{suffix}", datetime.fromisoformat("2024-01-05T12:00:00+05:30")],
         )
         con.execute(
-            """INSERT INTO source_document_revision VALUES
+            """INSERT INTO source_document_revision
+               (source_document_id,provider,dataset,source_identifier,source_file_id,checksum_sha256,revision_number,
+                source_document_date,publication_date,published_at,ingestion_timestamp,parser_version,
+                extraction_timestamp,extraction_locator,supersedes_source_document_id)
+               VALUES
                (?, 'synthetic', 'results', ?, ?, ?, 1, DATE '2024-01-05', ?,
                 ?, ?, 'parser-1', ?, '$.results', NULL)""",
             [doc_id, f"filing-{suffix}", file_id, self.checksum(f"document-{suffix}"), datetime.fromisoformat(published).date(), datetime.fromisoformat(published), datetime.fromisoformat(ingested), datetime.fromisoformat("2024-01-05T12:05:00+05:30")],
@@ -141,6 +146,79 @@ class DuckDBSchemaIntegrationTests(TestCase):
         new = con.execute("SELECT security_id FROM security_identifier_revision WHERE identifier_value='INE000A01001'").fetchone()[0]
         self.assertEqual(old, new)
         self.assertEqual(con.execute("SELECT symbol FROM exchange_listing_revision WHERE effective_from<=DATE '2022-01-01' AND (effective_to IS NULL OR effective_to>=DATE '2022-01-01')").fetchone()[0], "OLD")
+
+    def test_isin_change_preserves_effective_issuer_security_listing_and_price_history(self):
+        with DuckDBRepository(":memory:") as repo:
+            con = repo._connection
+            doc_old = self.seed_source(con, "isin-old", published="2024-01-05 10:00:00+05:30", ingested="2024-01-05 11:00:00+05:30")
+            doc_new = self.seed_source(con, "isin-new", published="2024-01-08 10:00:00+05:30", ingested="2024-01-08 11:00:00+05:30")
+            con.execute("INSERT INTO issuer_entity VALUES ('issuer-1', TIMESTAMPTZ '2020-01-01 00:00:00+00')")
+            con.execute("INSERT INTO issuer_entity VALUES ('issuer-successor', TIMESTAMPTZ '2024-01-01 00:00:00+00')")
+            con.execute("INSERT INTO equity_security VALUES ('security-old','issuer-1','EQ',TIMESTAMPTZ '2020-01-01 00:00:00+00')")
+            con.execute("INSERT INTO equity_security VALUES ('security-new','issuer-1','EQ',TIMESTAMPTZ '2024-01-01 00:00:00+00')")
+            con.execute("INSERT INTO equity_security VALUES ('security-successor','issuer-successor','EQ',TIMESTAMPTZ '2024-01-01 00:00:00+00')")
+            for listing_id, security_id, exchange, instrument in (
+                ("old-nse","security-old","NSE","NSE-OLD"),("old-bse","security-old","BSE","BSE-OLD"),
+                ("new-nse","security-new","NSE","NSE-NEW"),("new-bse","security-new","BSE","BSE-NEW"),
+                ("successor-nse","security-successor","NSE","NSE-SUCCESSOR"),
+            ):
+                con.execute("INSERT INTO exchange_listing VALUES (?,?,?,?,CURRENT_TIMESTAMP)", [listing_id,security_id,exchange,instrument])
+            con.execute("""INSERT INTO security_identifier_revision
+                (identifier_revision_id,security_id,identifier_type,identifier_value,effective_from,effective_to,source_document_id,mapping_review_status,reviewed_by,reviewed_at,supersedes_identifier_revision_id)
+                VALUES ('isin-old','security-old','ISIN','INE669E01016',DATE '2000-01-01',DATE '2023-12-31',?,'approved','reviewer',CURRENT_TIMESTAMP,NULL)""",[doc_old])
+            con.execute("""INSERT INTO security_identifier_revision
+                (identifier_revision_id,security_id,identifier_type,identifier_value,effective_from,effective_to,source_document_id,mapping_review_status,reviewed_by,reviewed_at,supersedes_identifier_revision_id)
+                VALUES ('isin-new','security-new','ISIN','INE009A01021',DATE '2024-01-01',NULL,?,'approved','reviewer',CURRENT_TIMESTAMP,'isin-old')""",[doc_new])
+            for listing_id, symbol, doc, start, end in (
+                ("old-nse","OLD",doc_old,"2000-01-01","2023-12-31"),("old-bse","OLD",doc_old,"2000-01-01","2023-12-31"),
+                ("new-nse","NEW",doc_new,"2024-01-01",None),("new-bse","NEW",doc_new,"2024-01-01",None),
+            ):
+                con.execute("""INSERT INTO exchange_listing_revision
+                    (listing_revision_id,listing_id,symbol,series,status,effective_from,effective_to,source_document_id,supersedes_listing_revision_id)
+                    VALUES (?, ?, ?, 'EQ','active',? ,?, ?,NULL)""",
+                    [f"rev-{listing_id}",listing_id,symbol,date.fromisoformat(start),date.fromisoformat(end) if end else None,doc])
+
+            def add_price(obs_id, security, listing, exchange, session, doc):
+                con.execute("""INSERT INTO normalized_observation_registry
+                    (observation_id,observation_type,source_document_id,source_identifier,checksum_sha256,parser_version,extraction_timestamp,extraction_locator)
+                    SELECT ?, 'eod_price',source_document_id,source_identifier,checksum_sha256,'parser-1',CURRENT_TIMESTAMP,'row:1'
+                    FROM source_document_revision WHERE source_document_id=?""",[obs_id,doc])
+                con.execute("""INSERT INTO eod_price_observation_revision
+                    (observation_id,observation_type,security_id,listing_id,exchange,trade_date,close_raw,source_document_id,source_identifier,checksum_sha256,parser_version,extraction_timestamp,extraction_locator,quality_status)
+                    SELECT ?, 'eod_price',?,?,?, ?,100,source_document_id,source_identifier,checksum_sha256,'parser-1',CURRENT_TIMESTAMP,'row:1','observed'
+                    FROM source_document_revision WHERE source_document_id=?""",[obs_id,security,listing,exchange,date.fromisoformat(session),doc])
+            add_price("price-old-nse","security-old","old-nse","NSE","2023-12-29",doc_old)
+            add_price("price-old-bse","security-old","old-bse","BSE","2023-12-29",doc_old)
+            add_price("price-new-nse","security-new","new-nse","NSE","2024-01-02",doc_new)
+            add_price("price-new-bse","security-new","new-bse","BSE","2024-01-02",doc_new)
+            con.execute("INSERT INTO financial_metric_definition VALUES ('revenue','INR','currency','Revenue','v1')")
+            repo.append_financial_observation(self.financial(
+                "financial-before-isin-change",doc_old,value="10",
+                publication=datetime(2024,1,5,10,tzinfo=IST),ingested=datetime(2024,1,5,11,tzinfo=IST),
+            ))
+            successor_financial = self.financial(
+                "financial-successor",doc_new,value="20",
+                publication=datetime(2024,1,8,10,tzinfo=IST),ingested=datetime(2024,1,8,11,tzinfo=IST),
+            )
+            repo.append_financial_observation(replace(successor_financial, subject_id="issuer-successor"))
+
+            def mapping(isin, when):
+                return con.execute("""SELECT e.issuer_entity_id,i.security_id FROM security_identifier_revision i
+                    JOIN equity_security e USING(security_id)
+                    WHERE i.identifier_value=? AND i.mapping_review_status='approved'
+                      AND i.effective_from<=? AND (i.effective_to IS NULL OR i.effective_to>=?)""",[isin,when,when]).fetchall()
+            self.assertEqual(mapping("INE669E01016",date(2023,12,29)),[("issuer-1","security-old")])
+            self.assertEqual(mapping("INE009A01021",date(2024,1,2)),[("issuer-1","security-new")])
+            self.assertEqual(mapping("INE669E01016",date(2024,1,2)),[])
+            for session, security in ((date(2023,12,29),"security-old"),(date(2024,1,2),"security-new")):
+                rows=con.execute("""SELECT l.exchange,l.security_id FROM exchange_listing l
+                    JOIN exchange_listing_revision r USING(listing_id) WHERE r.effective_from<=?
+                    AND (r.effective_to IS NULL OR r.effective_to>=?) ORDER BY l.exchange""",[session,session]).fetchall()
+                current=[row for row in rows if row[1] in ("security-old","security-new")]
+                self.assertEqual(len(current),2)
+                self.assertEqual({row[1] for row in current},{security})
+            self.assertEqual(con.execute("SELECT security_id,count(*) FROM eod_price_observation_revision GROUP BY security_id ORDER BY security_id").fetchall(),[("security-new",2),("security-old",2)])
+            self.assertEqual(con.execute("SELECT subject_entity_id,count(*) FROM financial_observation_revision GROUP BY subject_entity_id ORDER BY subject_entity_id").fetchall(),[("issuer-1",1),("issuer-successor",1)])
 
     def test_financial_revision_pit_modes_period_start_and_provenance(self):
         con = self.connection()
@@ -286,7 +364,7 @@ class DuckDBSchemaIntegrationTests(TestCase):
                 repo._connection.execute("INSERT INTO issuer_entity VALUES ('persisted', CURRENT_TIMESTAMP)")
             with DuckDBRepository(path) as reopened:
                 self.assertEqual(reopened._connection.execute("SELECT entity_id FROM issuer_entity").fetchall(), [("persisted",)])
-                self.assertEqual(reopened._connection.execute("SELECT current_version FROM schema_metadata").fetchone()[0], 1)
+                self.assertEqual(reopened._connection.execute("SELECT current_version FROM schema_metadata").fetchone()[0], 2)
                 migration_checksum = reopened._connection.execute("SELECT migration_checksum_sha256 FROM schema_migration WHERE migration_id='0001_initial_analytics'").fetchone()[0]
                 self.assertEqual(migration_checksum, sha256(SCHEMA.read_bytes()).hexdigest())
 

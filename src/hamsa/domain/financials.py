@@ -54,6 +54,7 @@ class FinancialObservationRevision:
     reporting_scope: str = "consolidated"
     quality_reason: str | None = None
     formula_version: str | None = None
+    replay_timestamp: datetime | None = None
 
     def __post_init__(self) -> None:
         if self.revision_number < 1:
@@ -72,6 +73,8 @@ class FinancialObservationRevision:
             raise ValueError("ingestion_timestamp must be timezone-aware")
         if self.extraction_timestamp.tzinfo is None or self.extraction_timestamp.utcoffset() is None:
             raise ValueError("extraction_timestamp must be timezone-aware")
+        if self.replay_timestamp is not None and (self.replay_timestamp.tzinfo is None or self.replay_timestamp.utcoffset() is None):
+            raise ValueError("replay_timestamp must be timezone-aware")
         if not self.source_document_id or not self.parser_version or not self.source_locator:
             raise ValueError("source document, parser version, and extraction locator are required")
         if self.quality_status is QualityStatus.MISSING and self.canonical_value is not None:

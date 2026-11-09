@@ -1,4 +1,5 @@
 from datetime import date, datetime, timedelta, timezone
+from dataclasses import replace
 from hashlib import sha256
 import unittest
 
@@ -83,6 +84,15 @@ class SecurityMasterTests(unittest.TestCase):
         self.assertEqual(len(result.listings), 2)
         self.assertEqual({row.symbol for row in result.listings}, {"OLD", "NEW"})
         self.assertEqual({row.company_isin for row in result.listings}, {"INE669E01016"})
+        self.assertEqual(len({row.listing_id for row in result.listings}), 1)
+
+    def test_isin_change_creates_distinct_listing_identity(self):
+        result = build_security_master((
+            replace(self.row(Exchange.NSE, "NSE-100", "OLD", "INE669E01016", "old-isin"), effective_from=date(2020,1,1)),
+            replace(self.row(Exchange.NSE, "NSE-100", "NEW", "INE009A01021", "new-isin"), effective_from=date(2025,1,1)),
+        ))
+        self.assertEqual(len(result.listings), 2)
+        self.assertEqual(len({row.listing_id for row in result.listings}), 2)
 
     def test_missing_or_invalid_isin_is_quarantined(self):
         result = build_security_master((

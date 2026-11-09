@@ -21,13 +21,17 @@ class RepositoryIntegrityError(ValueError):
 
 class DuckDBRepository:
     SCHEMA_NAME = "hamsa_analytics"
-    SCHEMA_VERSION = 1
+    SCHEMA_VERSION = 2
     BASELINE_MIGRATION = "0001_initial_analytics"
+    CURRENT_MIGRATION = "0002_ingestion_processing"
+    BASELINE_SCHEMA_CHECKSUM = "2a00ecaa3505f024092b56a1453ac3ac207c113765efcb71f14568c20c67dbee"
 
     def __init__(self, database_path: str | Path = ":memory:", *, schema_path: str | Path | None = None):
         self._database_path = str(database_path)
         self._schema_path = Path(schema_path) if schema_path else Path(__file__).resolve().parents[3] / "sql" / "duckdb_schema.sql"
         self._connection = duckdb.connect(self._database_path)
+        self._transaction_depth = 0
+        self._rollback_only = False
         try:
             self._initialize()
         except Exception:
@@ -37,7 +41,6 @@ class DuckDBRepository:
     def _initialize(self) -> None:
         schema_bytes = self._schema_path.read_bytes()
         self._connection.execute(schema_bytes.decode("utf-8"))
-        schema_checksum = sha256(schema_bytes).hexdigest()
         metadata = self._connection.execute(
             "SELECT current_version, current_migration FROM schema_metadata WHERE schema_name = ?",
             [self.SCHEMA_NAME],
@@ -45,7 +48,7 @@ class DuckDBRepository:
         if metadata is None:
             raise RepositoryIntegrityError("schema metadata row is missing after schema initialization")
         version, migration = metadata
-        if version != self.SCHEMA_VERSION or migration != self.BASELINE_MIGRATION:
+        if version not in (1, self.SCHEMA_VERSION) or migration not in (self.BASELINE_MIGRATION, self.CURRENT_MIGRATION):
             raise RepositoryIntegrityError(
                 f"unsupported schema metadata: version={version}, migration={migration}"
             )
@@ -59,23 +62,63 @@ class DuckDBRepository:
                 """INSERT INTO schema_migration
                    (migration_id, from_version, to_version, migration_checksum_sha256, applied_at, applied_by)
                    VALUES (?, 0, ?, ?, CURRENT_TIMESTAMP, ?)""",
-                [self.BASELINE_MIGRATION, self.SCHEMA_VERSION, schema_checksum, "hamsa-storage"],
+                [self.BASELINE_MIGRATION, 1, self.BASELINE_SCHEMA_CHECKSUM, "hamsa-storage"],
             )
-        elif existing[0] != schema_checksum:
+        elif existing[0] != self.BASELINE_SCHEMA_CHECKSUM:
             raise RepositoryIntegrityError(
-                "baseline schema checksum differs from the migration record; an explicit migration is required"
+                "baseline schema checksum differs from the supported v1 migration record"
             )
+
+        migration_path = self._schema_path.parent / "migrations" / f"{self.CURRENT_MIGRATION}.sql"
+        migration_bytes = migration_path.read_bytes()
+        migration_checksum = sha256(migration_bytes).hexdigest()
+        recorded_v2 = self._connection.execute(
+            "SELECT migration_checksum_sha256 FROM schema_migration WHERE migration_id=?",
+            [self.CURRENT_MIGRATION],
+        ).fetchone()
+        if version == 1:
+            if recorded_v2 is not None:
+                raise RepositoryIntegrityError("schema has a v2 migration row while metadata still reports v1")
+            with self._transaction():
+                self._connection.execute(migration_bytes.decode("utf-8"))
+                self._connection.execute(
+                    """INSERT INTO schema_migration
+                       (migration_id,from_version,to_version,migration_checksum_sha256,applied_at,applied_by)
+                       VALUES (?,1,2,?,CURRENT_TIMESTAMP,'hamsa-storage')""",
+                    [self.CURRENT_MIGRATION, migration_checksum],
+                )
+                self._connection.execute(
+                    """UPDATE schema_metadata SET current_version=2,current_migration=?,updated_at=CURRENT_TIMESTAMP
+                       WHERE schema_name=?""",
+                    [self.CURRENT_MIGRATION, self.SCHEMA_NAME],
+                )
+        elif recorded_v2 is None or recorded_v2[0] != migration_checksum:
+            raise RepositoryIntegrityError("schema v2 migration checksum is missing or differs; explicit migration required")
 
     @contextmanager
     def _transaction(self) -> Iterator[None]:
-        self._connection.execute("BEGIN TRANSACTION")
+        outermost = self._transaction_depth == 0
+        if outermost:
+            self._connection.execute("BEGIN TRANSACTION")
+            self._rollback_only = False
+        self._transaction_depth += 1
         try:
             yield
         except Exception:
-            self._connection.execute("ROLLBACK")
+            self._transaction_depth -= 1
+            self._rollback_only = True
+            if outermost:
+                self._connection.execute("ROLLBACK")
+                self._rollback_only = False
             raise
         else:
-            self._connection.execute("COMMIT")
+            self._transaction_depth -= 1
+            if outermost:
+                if self._rollback_only:
+                    self._connection.execute("ROLLBACK")
+                    self._rollback_only = False
+                    raise RepositoryIntegrityError("transaction is rollback-only after a nested write failure")
+                self._connection.execute("COMMIT")
 
     @staticmethod
     def _same_instant(left, right_text: str | None) -> bool:
@@ -91,6 +134,7 @@ class DuckDBRepository:
         observation: FinancialObservationRevision,
         *,
         lineage_inputs: Iterable[tuple[str, str]] = (),
+        extraction_revision_id: str | None = None,
     ) -> str:
         """Append one financial revision and its registry/lineage rows atomically."""
         connection = self._connection
@@ -115,8 +159,10 @@ class DuckDBRepository:
             ingested_at.replace(" ", "T", 1)
         ).timestamp():
             raise RepositoryIntegrityError("financial observation ingestion precedes its source document ingestion")
-        if observation.parser_version != parser_version:
-            raise RepositoryIntegrityError("financial observation parser version disagrees with its source document")
+        # source_document_revision.parser_version is the initial parser recorded
+        # when the source bytes were first registered. Reprocessing identical
+        # bytes may legitimately use a newer parser; registry and processing
+        # revision rows carry the authoritative extraction parser version.
 
         metric = connection.execute(
             "SELECT canonical_unit FROM financial_metric_definition WHERE metric = ?",
@@ -172,16 +218,27 @@ class DuckDBRepository:
                 raise RepositoryIntegrityError(f"unknown or mismatched lineage input: {input_id} ({input_type})")
 
         with self._transaction():
+            if extraction_revision_id is None:
+                extraction_revision_id = self._ensure_extraction_revision(observation)
+            else:
+                processing = connection.execute(
+                    """SELECT source_document_id,parser_version,status FROM source_document_processing_revision
+                       WHERE processing_revision_id=?""",
+                    [extraction_revision_id],
+                ).fetchone()
+                if processing is None or processing[0] != observation.source_document_id or processing[1] != observation.parser_version or processing[2] not in ("started", "succeeded"):
+                    raise RepositoryIntegrityError("normalized observation references an invalid extraction revision")
             connection.execute(
                 """INSERT INTO normalized_observation_registry
                    (observation_id, observation_type, source_document_id, source_identifier,
-                    checksum_sha256, parser_version, extraction_timestamp, extraction_locator, formula_version)
+                    checksum_sha256, parser_version, extraction_timestamp, extraction_locator, formula_version, extraction_revision_id)
                    SELECT ?, 'financial', d.source_document_id, d.source_identifier, d.checksum_sha256,
-                          ?, ?, ?, ?
+                          ?, ?, ?, ?, ?
                    FROM source_document_revision d WHERE d.source_document_id = ?""",
                 [
                     observation.observation_id, observation.parser_version, observation.extraction_timestamp,
-                    observation.source_locator, observation.formula_version, observation.source_document_id,
+                    observation.source_locator, observation.formula_version, extraction_revision_id,
+                    observation.source_document_id,
                 ],
             )
             connection.execute(
@@ -191,8 +248,8 @@ class DuckDBRepository:
                    source_document_date, publication_date, published_at, publication_precision,
                    ingestion_timestamp, revision_number, source_document_id, as_reported_status,
                    quality_status, quality_reason, reporting_scope, parser_version,
-                   extraction_timestamp, extraction_locator, formula_version, supersedes_observation_id
-                   ) VALUES (?, 'financial', ?, ?, ?, ?, ?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                   extraction_timestamp, extraction_locator, formula_version, supersedes_observation_id, replay_timestamp
+                   ) VALUES (?, 'financial', ?, ?, ?, ?, ?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                 [
                     observation.observation_id, observation.subject_id, observation.metric,
                     observation.raw_value, observation.raw_unit, observation.canonical_value,
@@ -204,6 +261,7 @@ class DuckDBRepository:
                     observation.quality_reason, observation.reporting_scope, observation.parser_version,
                     observation.extraction_timestamp, observation.source_locator, observation.formula_version,
                     observation.supersedes_observation_id,
+                    observation.replay_timestamp,
                 ],
             )
             for input_id, input_type in inputs:
@@ -215,6 +273,34 @@ class DuckDBRepository:
                     [observation.observation_id, input_id, input_type, observation.formula_version],
                 )
         return observation.observation_id
+
+    def _ensure_extraction_revision(self, observation: FinancialObservationRevision) -> str:
+        existing = self._connection.execute(
+            """SELECT processing_revision_id FROM source_document_processing_revision
+               WHERE source_document_id=? AND parser_version=? AND status='succeeded'
+               ORDER BY attempt_number DESC LIMIT 1""",
+            [observation.source_document_id, observation.parser_version],
+        ).fetchone()
+        if existing:
+            return existing[0]
+        latest = self._connection.execute(
+            """SELECT processing_revision_id,attempt_number FROM source_document_processing_revision
+               WHERE source_document_id=? ORDER BY attempt_number DESC LIMIT 1""",
+            [observation.source_document_id],
+        ).fetchone()
+        revision_id = "proc-" + sha256(
+            f"{observation.source_document_id}|{observation.parser_version}|{observation.extraction_timestamp.isoformat()}".encode("utf-8")
+        ).hexdigest()[:32]
+        self._connection.execute(
+            """INSERT INTO source_document_processing_revision
+               (processing_revision_id,source_document_id,parser_version,attempt_number,started_at,completed_at,
+                replay_timestamp,status,accepted_count,rejected_count,quarantined_count,error_summary,supersedes_processing_revision_id)
+               VALUES (?,?,?,?,?,?,?,'succeeded',1,0,0,NULL,?)""",
+            [revision_id, observation.source_document_id, observation.parser_version,
+             latest[1] + 1 if latest else 1, observation.extraction_timestamp,
+             observation.extraction_timestamp, observation.replay_timestamp, latest[0] if latest else None],
+        )
+        return revision_id
 
     def close(self) -> None:
         self._connection.close()

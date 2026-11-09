@@ -1,0 +1,3 @@
+exchange,instrument_id,symbol,isin,effective_from,effective_to,series,company_name
+BSE,BSE-500,ALPHA,IN0000000011,2020-01-01,,A,Synthetic Alpha Ltd
+BSE,BSE-600,BETA,IN0000000029,2020-01-01,,A,Synthetic Beta Ltd
