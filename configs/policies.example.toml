@@ -1,0 +1,17 @@
+# Documentation example only. Not an active provider or screening profile.
+# Load a versioned official exchange calendar before making a historical run.
+[time]
+timezone = "Asia/Kolkata"
+eod_cutoff = "15:30"
+calendar_version = "REPLACE_WITH_APPROVED_EXCHANGE_CALENDAR_VERSION"
+
+[canonical_units]
+price = "INR_PER_SHARE"
+financial_amount = "INR"
+quantity = "SHARES"
+percentage = "PERCENT"
+ratio = "RATIO_X"
+duration = "DAYS"
+
+# Supply explicit source-specific staleness limits only after metric coverage
+# and update cadence have been reviewed. Missing policy means no freshness claim.

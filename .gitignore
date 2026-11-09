@@ -1,0 +1,57 @@
+# Raw market, filing, and research archives
+/data/raw/
+/data/processed/
+/archives/
+
+# Local databases and database sidecars
+*.duckdb
+*.duckdb.*
+*.sqlite
+*.sqlite3
+*.db
+*.db-*
+*.wal
+*.shm
+
+# Credentials, private keys, certificates, and environment files
+.env
+.env.*
+!.env.example
+/.aws/
+/.secrets/
+/secrets/
+secrets.*
+credentials.*
+*.pem
+*.key
+*.crt
+*.cer
+*.der
+*.p12
+*.pfx
+*.jks
+id_rsa
+id_ed25519
+
+# Logs, temporary files, and generated reports
+*.log
+*.tmp
+*.bak
+/logs/
+/tmp/
+/reports/generated/
+
+# Python environments, caches, and build output
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
