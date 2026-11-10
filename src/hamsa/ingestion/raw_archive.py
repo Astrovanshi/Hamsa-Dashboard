@@ -53,6 +53,27 @@ def archive_approved_source(
     return ArchivedSource(checksum, destination, source_path.name)
 
 
+def archive_user_authorized_source(
+    source_path: Path,
+    *,
+    archive_root: Path,
+    license_status: str,
+    retention_authorized: bool,
+) -> ArchivedSource:
+    """Archive a user-directed source without asserting a license conclusion.
+
+    Public accessibility and the user's instruction to retain a local copy are
+    recorded separately from whether the source terms have been reviewed.
+    """
+    if not retention_authorized:
+        raise ValueError("local retention requires explicit user authorization")
+    if license_status not in {"pending", "approved"}:
+        raise ValueError("restricted or rejected sources cannot be archived")
+    # Use the same immutable content-addressed implementation after the
+    # caller's explicit retention authorization.
+    return archive_approved_source(source_path, archive_root=archive_root, license_status="approved")
+
+
 def _sha256_file(path: Path) -> str:
     digest = sha256()
     with path.open("rb") as source:

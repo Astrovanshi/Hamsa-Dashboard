@@ -1,0 +1,17 @@
+{
+  "parser_version": "hamsa-official-eod-v1",
+  "nse_series_allowlist": ["EQ"],
+  "nse_isin_allowlist": ["INE062A01020"],
+  "nse_delivery_symbols_allowlist": ["SBIN"],
+  "identity_map": {
+    "INE062A01020": ["issuer-sbi", "security-ine062a01020"]
+  },
+  "bse_listing_mapping": {
+    "instrument_id": "500112",
+    "symbol": "SBIN",
+    "isin": "INE062A01020",
+    "effective_from": "2026-11-09",
+    "company_name": "State Bank of India",
+    "evidence_reference": "BSE Stock Prices public lookup; manually verify the applicable date and listing before use"
+  }
+}

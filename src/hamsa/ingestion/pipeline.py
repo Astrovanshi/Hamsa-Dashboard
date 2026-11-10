@@ -15,7 +15,7 @@ from hashlib import sha256
 import json
 import os
 from pathlib import Path
-from typing import Callable, Iterable, Mapping
+from typing import Callable, Iterable, Mapping, Sequence
 from datetime import timezone
 
 from hamsa.domain.financials import (
@@ -27,7 +27,7 @@ from hamsa.domain.financials import (
 from hamsa.domain.market_data import EodBar
 from hamsa.domain.security import Exchange, ListingCandidate
 from hamsa.ingestion.eod_validation import validate_eod_bars
-from hamsa.ingestion.raw_archive import archive_approved_source
+from hamsa.ingestion.raw_archive import archive_approved_source, archive_user_authorized_source
 from hamsa.ingestion.security_master import build_security_master
 from hamsa.storage.as_reported import as_reported_snapshot
 from hamsa.storage.duckdb_repository import DuckDBRepository
@@ -45,6 +45,11 @@ class SyntheticFileSpec:
     source_as_of_date: date | None
     parser_version: str
     original_filename: str | None = None
+    provider: str = "synthetic-fixture"
+    license_reference: str = "synthetic-data-license-v1"
+    license_status: str = "approved"
+    retention_authorized: bool = False
+    parser_options: Mapping[str, object] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not self.path.is_file():
@@ -65,6 +70,8 @@ class FileIngestionResult:
     duplicates: int = 0
     revised: int = 0
     error: str | None = None
+    # Appended to preserve the positional shape of the earlier report API.
+    out_of_scope: int = 0
 
 
 @dataclass(slots=True)
@@ -75,10 +82,11 @@ class IngestionReport:
     duplicates: int = 0
     revised: int = 0
     files: list[FileIngestionResult] = field(default_factory=list)
+    out_of_scope: int = 0
 
     def add(self, result: FileIngestionResult) -> None:
         self.files.append(result)
-        for key in ("accepted", "rejected", "quarantined", "duplicates", "revised"):
+        for key in ("accepted", "rejected", "quarantined", "duplicates", "revised", "out_of_scope"):
             setattr(self, key, getattr(self, key) + getattr(result, key))
 
     def as_dict(self) -> dict[str, object]:
@@ -88,6 +96,7 @@ class IngestionReport:
             "quarantined": self.quarantined,
             "duplicates": self.duplicates,
             "revised": self.revised,
+            "out_of_scope": self.out_of_scope,
             "files": [
                 {
                     "source_identifier": file.source_identifier,
@@ -97,6 +106,7 @@ class IngestionReport:
                     "quarantined": file.quarantined,
                     "duplicates": file.duplicates,
                     "revised": file.revised,
+                    "out_of_scope": file.out_of_scope,
                     "error": file.error,
                 }
                 for file in self.files
@@ -133,7 +143,19 @@ class SyntheticIngestionPipeline:
         self.repository = repository
         self.archive_root = archive_root
         self.metric_units = dict(metric_units)
-        self.identity_map = {isin.strip().upper(): ids for isin, ids in identity_map.items()}
+        normalized_identity_map: dict[str, tuple[str, str]] = {}
+        security_isins: dict[str, set[str]] = {}
+        for isin, ids in identity_map.items():
+            normalized_isin = isin.strip().upper()
+            if len(ids) != 2 or not all(str(value).strip() for value in ids):
+                raise ValueError(f"identity mapping for {normalized_isin!r} must contain issuer and security IDs")
+            normalized_identity_map[normalized_isin] = (str(ids[0]).strip(), str(ids[1]).strip())
+            security_isins.setdefault(str(ids[1]).strip(), set()).add(normalized_isin)
+        self.identity_map = normalized_identity_map
+        self.identity_map_conflicts = {
+            isin for security_isin_set in security_isins.values() if len(security_isin_set) > 1
+            for isin in security_isin_set
+        }
         self.parser_version = parser_version
         self.replay_mode = replay_mode
         self.replay_clock = replay_clock
@@ -204,7 +226,7 @@ class SyntheticIngestionPipeline:
             return rows, lines
 
     def _manifest_path(self, spec: SyntheticFileSpec, checksum: str) -> Path:
-        manifest_id = self._stable_id("manifest", self.PROVIDER, spec.dataset, spec.source_identifier, checksum)
+        manifest_id = self._stable_id("manifest", spec.provider, spec.dataset, spec.source_identifier, checksum)
         directory = self.archive_root / "_manifests"
         directory.mkdir(parents=True, exist_ok=True)
         return directory / f"{manifest_id}.json"
@@ -216,7 +238,11 @@ class SyntheticIngestionPipeline:
         os.replace(temp_path, path)
 
     def _archive_source(self, spec: SyntheticFileSpec, times: "SyntheticIngestionPipeline.Times"):
-        archived = archive_approved_source(spec.path, archive_root=self.archive_root, license_status="approved")
+        if spec.license_status == "approved":
+            archived = archive_approved_source(spec.path, archive_root=self.archive_root, license_status="approved")
+        else:
+            archived = archive_user_authorized_source(spec.path, archive_root=self.archive_root,
+                license_status=spec.license_status, retention_authorized=spec.retention_authorized)
         checksum = archived.sha256_hex
         manifest_path = self._manifest_path(spec, checksum)
         archive_path = str(archived.archive_path.resolve())
@@ -226,23 +252,34 @@ class SyntheticIngestionPipeline:
         else:
             processed = []
             manifest = {
-                "provider": self.PROVIDER,
+                "provider": spec.provider,
+                "license_reference": spec.license_reference,
+                "license_status": spec.license_status,
+                "parser_options": dict(spec.parser_options),
                 "dataset": spec.dataset,
                 "source_identifier": spec.source_identifier,
                 "source_document_date": spec.source_document_date.isoformat(),
                 "publication_date": spec.publication_date.isoformat(),
                 "published_at": spec.published_at.isoformat() if spec.published_at else None,
                 "source_as_of_date": spec.source_as_of_date.isoformat() if spec.source_as_of_date else None,
-                "original_filename": spec.path.name,
+                "original_filename": spec.original_filename or spec.path.name,
                 "checksum_sha256": checksum,
                 "archive_path": archive_path,
                 "actual_archived_at": times.actual.isoformat(),
                 "replay_timestamp": times.replay.isoformat() if times.replay else None,
                 "processed_parser_versions": [],
                 "parser_replay_timestamps": {},
+                "parser_options_by_version": {},
             }
+        options_by_version = dict(manifest.get("parser_options_by_version", {}))
+        serialized_options = json.loads(json.dumps(dict(spec.parser_options), sort_keys=True))
+        prior_options = options_by_version.get(spec.parser_version)
+        if prior_options is not None and prior_options != serialized_options:
+            raise ValueError("parser options changed without a parser-version change; use a new parser version")
+        options_by_version[spec.parser_version] = serialized_options
         manifest["last_attempted_parser_version"] = spec.parser_version
         manifest["processed_parser_versions"] = processed
+        manifest["parser_options_by_version"] = options_by_version
         replay_times = dict(manifest.get("parser_replay_timestamps", {}))
         if spec.parser_version not in replay_times:
             replay_times[spec.parser_version] = times.replay.isoformat() if times.replay else None
@@ -263,10 +300,11 @@ class SyntheticIngestionPipeline:
                     """INSERT INTO raw_source_file
                        (source_file_id,provider,dataset,original_filename,checksum_sha256,archive_path,
                         captured_at,source_as_of_date,license_review_reference,license_status,metadata_json)
-                       VALUES (?,?,?,?,?,?,?,?,?,'approved',?)""",
-                    [source_file_id, self.PROVIDER, spec.dataset, spec.original_filename or spec.path.name, checksum, archive_path,
-                     times.actual, spec.source_as_of_date, self.LICENSE_REFERENCE,
-                     json.dumps({"synthetic": True, "parser_version": spec.parser_version,
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+                    [source_file_id, spec.provider, spec.dataset, spec.original_filename or spec.path.name, checksum, archive_path,
+                     times.actual, spec.source_as_of_date, spec.license_reference, spec.license_status,
+                     json.dumps({"synthetic": spec.provider == "synthetic-fixture", "parser_options": dict(spec.parser_options), "parser_version": spec.parser_version,
+                                 "license_status": spec.license_status,
                                  "replay_timestamp": times.replay.isoformat() if times.replay else None})],
                 )
             else:
@@ -275,12 +313,12 @@ class SyntheticIngestionPipeline:
             existing_doc = self._con.execute(
                 """SELECT source_document_id,revision_number FROM source_document_revision
                    WHERE provider=? AND dataset=? AND source_identifier=? AND checksum_sha256=?""",
-                [self.PROVIDER, spec.dataset, spec.source_identifier, checksum],
+                [spec.provider, spec.dataset, spec.source_identifier, checksum],
             ).fetchone()
             latest = self._con.execute(
                 """SELECT source_document_id,revision_number FROM source_document_revision
                    WHERE provider=? AND dataset=? AND source_identifier=? ORDER BY revision_number DESC LIMIT 1""",
-                [self.PROVIDER, spec.dataset, spec.source_identifier],
+                [spec.provider, spec.dataset, spec.source_identifier],
             ).fetchone()
             duplicate = existing_doc is not None
             if duplicate:
@@ -290,7 +328,7 @@ class SyntheticIngestionPipeline:
                 revision_number = (latest[1] + 1) if latest else 1
                 supersedes_document_id = latest[0] if latest else None
                 source_document_id = self._stable_id(
-                    "doc", self.PROVIDER, spec.dataset, spec.source_identifier, checksum
+                    "doc", spec.provider, spec.dataset, spec.source_identifier, checksum
                 )
                 self._con.execute(
                     """INSERT INTO source_document_revision
@@ -298,7 +336,7 @@ class SyntheticIngestionPipeline:
                         revision_number,source_document_date,publication_date,published_at,ingestion_timestamp,
                         parser_version,extraction_timestamp,extraction_locator,supersedes_source_document_id,replay_timestamp)
                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-                    [source_document_id, self.PROVIDER, spec.dataset, spec.source_identifier, source_file_id,
+                    [source_document_id, spec.provider, spec.dataset, spec.source_identifier, source_file_id,
                      checksum, revision_number, spec.source_document_date, spec.publication_date,
                      spec.published_at, times.actual, spec.parser_version,
                      times.actual, "$", supersedes_document_id, times.replay],
@@ -307,7 +345,7 @@ class SyntheticIngestionPipeline:
                 """INSERT INTO source_document_sighting
                    (provider,dataset,source_identifier,checksum_sha256,source_file_id,first_seen_at,source_document_id)
                    VALUES (?,?,?,?,?,?,?) ON CONFLICT DO NOTHING""",
-                [self.PROVIDER, spec.dataset, spec.source_identifier, checksum, source_file_id,
+                [spec.provider, spec.dataset, spec.source_identifier, checksum, source_file_id,
                  times.actual, source_document_id],
             )
         return source_file_id, source_document_id, revision_number, supersedes_document_id, duplicate
@@ -391,6 +429,11 @@ class SyntheticIngestionPipeline:
                 source_as_of_date=date.fromisoformat(manifest["source_as_of_date"]) if manifest.get("source_as_of_date") else None,
                 parser_version=parser_version,
                 original_filename=manifest.get("original_filename"),
+                provider=manifest.get("provider", "synthetic-fixture"),
+                license_reference=manifest.get("license_reference", "synthetic-data-license-v1"),
+                license_status=manifest.get("license_status", "approved"),
+                retention_authorized=manifest.get("license_status") == "pending",
+                parser_options=manifest.get("parser_options", {}),
             )
             replay_value = manifest.get("parser_replay_timestamps", {}).get(parser_version)
             replay_at = datetime.fromisoformat(replay_value) if replay_value else None
@@ -426,7 +469,7 @@ class SyntheticIngestionPipeline:
                     checksum_sha256=self._con.execute("SELECT checksum_sha256 FROM raw_source_file WHERE source_file_id=?", [source_file_id]).fetchone()[0],
                     parser_version=spec.parser_version,
                     extraction_timestamp=context.times.actual,
-                    extraction_locator=f"csv:line:{line}",
+                    extraction_locator=row.get("_source_locator", f"csv:line:{line}"),
                     series=row.get("series") or None,
                     company_name=row.get("company_name") or None,
                 ))
@@ -443,6 +486,11 @@ class SyntheticIngestionPipeline:
 
         accepted = revised = 0
         for listing in result.listings:
+            if listing.company_isin in self.identity_map_conflicts:
+                self._quarantine(doc_id, f"isin:{listing.company_isin}", "conflicting_identity_mapping",
+                                 "multiple ISINs were assigned to one security ID; histories remain separate", context.times.actual)
+                quarantined += 1
+                continue
             mapped_identity = self.identity_map.get(listing.company_isin)
             if mapped_identity is None:
                 self._quarantine(doc_id, f"isin:{listing.company_isin}", "unreviewed_identity_mapping", "no reviewed issuer/security mapping supplied", context.times.actual)
@@ -474,10 +522,10 @@ class SyntheticIngestionPipeline:
                        (identifier_revision_id,security_id,identifier_type,identifier_value,effective_from,effective_to,
                         source_document_id,mapping_review_status,reviewed_by,reviewed_at,supersedes_identifier_revision_id,
                         parser_version,extraction_timestamp,extraction_locator,extraction_revision_id)
-                       VALUES (?,?, 'ISIN', ?,?,?,?,'approved','synthetic-fixture',?,NULL,?,?,?,?)""",
+                       VALUES (?,?, 'ISIN', ?,?,?,?,'approved',?,?,NULL,?,?,?,?)""",
                     [identifier_id, security_id, listing.company_isin, candidate.effective_from,
-                     candidate.effective_to, doc_id, context.times.actual, spec.parser_version,
-                     context.times.actual, f"csv:line:{next(i for c,i in zip(candidates,line_numbers) if c is candidate)}",
+                     candidate.effective_to, doc_id, spec.provider, context.times.actual, spec.parser_version,
+                     context.times.actual, candidate.extraction_locator,
                      context.processing_revision_id],
                 )
             prior_listing_revision = self._con.execute(
@@ -492,7 +540,7 @@ class SyntheticIngestionPipeline:
                    VALUES (?,?,?,?,'active',?,?,?,?,?,?,?,?) ON CONFLICT DO NOTHING""",
                 [revision_id, listing.listing_id, listing.symbol, listing.series, candidate.effective_from,
                  candidate.effective_to, doc_id, prior_listing_revision[0] if prior_listing_revision else None,
-                 spec.parser_version, context.times.actual, f"csv:line:{next(i for c,i in zip(candidates,line_numbers) if c is candidate)}",
+                 spec.parser_version, context.times.actual, candidate.extraction_locator,
                  context.processing_revision_id],
             )
             accepted += int(prior_listing_revision is None)
@@ -504,7 +552,9 @@ class SyntheticIngestionPipeline:
             """SELECT l.listing_id,l.security_id,lr.symbol FROM exchange_listing l
                JOIN exchange_listing_revision lr USING(listing_id)
                WHERE l.exchange=? AND l.exchange_instrument_id=? AND lr.symbol=? AND lr.status='active'
-                 AND lr.effective_from<=? AND (lr.effective_to IS NULL OR lr.effective_to>=?)""",
+                 AND lr.effective_from<=? AND (lr.effective_to IS NULL OR lr.effective_to>=?)
+                 AND NOT EXISTS (SELECT 1 FROM exchange_listing_revision child
+                                 WHERE child.supersedes_listing_revision_id=lr.listing_revision_id)""",
             [exchange, instrument_id, symbol, trade_date, trade_date],
         ).fetchall()
 
@@ -526,14 +576,18 @@ class SyntheticIngestionPipeline:
                      context: "SyntheticIngestionPipeline.ProcessingContext"):
         bars: list[EodBar] = []
         info: dict[str, tuple[str, str]] = {}
+        bars_by_key: dict[tuple[str, date], EodBar] = {}
+        invalid_duplicate_keys: set[tuple[str, date]] = set()
         quarantine = 0
         rejected = 0
         source_file_id = self._con.execute(
             "SELECT source_file_id FROM source_document_revision WHERE source_document_id=?", [doc_id]
         ).fetchone()[0]
         for row, line in zip(rows, lines):
-            locator = f"csv:line:{line}"
+            locator = row.get("_source_locator", f"csv:line:{line}")
             try:
+                if row.get("_parse_error"):
+                    raise ValueError(row["_parse_error"])
                 trade_date = self._date(row["trade_date"], "trade_date")
                 exchange = row["exchange"].strip().upper()
                 declared_units = (row["price_unit"].strip(), row["volume_unit"].strip(), row["turnover_unit"].strip())
@@ -554,7 +608,35 @@ class SyntheticIngestionPipeline:
                     volume=int(row["volume"]) if row["volume"].strip() else None,
                     turnover=self._decimal(row["turnover"], "turnover"), source_file_id=source_file_id,
                 )
+                numeric_prices = (bar.open, bar.high, bar.low, bar.close)
+                if (any(value is not None and value < 0 for value in numeric_prices)
+                        or bar.high is not None and bar.low is not None and bar.high < bar.low
+                        or bar.volume is not None and bar.volume < 0
+                        or bar.turnover is not None and bar.turnover < 0):
+                    rejected += 1
+                    continue
+                natural_key = (bar.listing_id, bar.trade_date)
+                if natural_key in invalid_duplicate_keys:
+                    self._quarantine(doc_id, locator, "conflicting_duplicate_eod", "listing/date was already quarantined for conflicting duplicate rows", context.times.actual)
+                    quarantine += 1
+                    continue
+                prior_bar = bars_by_key.get(natural_key)
+                if prior_bar is not None:
+                    current_values = (bar.open, bar.high, bar.low, bar.close, bar.volume, bar.turnover)
+                    prior_values = (prior_bar.open, prior_bar.high, prior_bar.low, prior_bar.close, prior_bar.volume, prior_bar.turnover)
+                    if current_values == prior_values and natural_key not in invalid_duplicate_keys:
+                        rejected += 1
+                    else:
+                        self._quarantine(doc_id, info[bar.listing_id][1], "conflicting_duplicate_eod", "multiple differing rows share listing and trade date", context.times.actual)
+                        self._quarantine(doc_id, locator, "conflicting_duplicate_eod", "multiple differing rows share listing and trade date", context.times.actual)
+                        quarantine += 2
+                        invalid_duplicate_keys.add(natural_key)
+                        bars = [existing for existing in bars if (existing.listing_id, existing.trade_date) != natural_key]
+                        bars_by_key.pop(natural_key, None)
+                        info.pop(bar.listing_id, None)
+                    continue
                 bars.append(bar)
+                bars_by_key[natural_key] = bar
                 info[listing_id] = (security_id, locator)
             except (ValueError, KeyError) as exc:
                 self._quarantine(doc_id, locator, "invalid_eod_row", str(exc), context.times.actual)
@@ -562,6 +644,7 @@ class SyntheticIngestionPipeline:
         expected = spec.source_as_of_date
         if expected is None:
             return 0, rejected + len(rows), quarantine, 0
+        bars = [bar for bar in bars if (bar.listing_id, bar.trade_date) not in invalid_duplicate_keys]
         validated = validate_eod_bars(bars, expected_trade_date=expected,
                                        known_listing_ids=set(info), source_file_id=source_file_id)
         rejected += len(validated.issues)
@@ -596,6 +679,115 @@ class SyntheticIngestionPipeline:
             )
             revised += int(prior is not None)
         return len(validated.accepted) - revised, rejected, quarantine, revised
+
+    def _persist_delivery(self, spec: SyntheticFileSpec, doc_id: str, rows: list[dict[str, str]], lines: list[int],
+                          context: "SyntheticIngestionPipeline.ProcessingContext"):
+        accepted = rejected = quarantined = revised = 0
+        seen_in_batch: set[tuple[str, date]] = set()
+        source = self._con.execute("SELECT source_file_id,source_identifier,checksum_sha256 FROM source_document_revision WHERE source_document_id=?", [doc_id]).fetchone()
+        for row, line in zip(rows, lines):
+            locator = row.get("_source_locator", f"csv:line:{line}")
+            try:
+                if row.get("_parse_error"):
+                    raise ValueError(row["_parse_error"])
+                day = self._date(row["trade_date"], "trade_date")
+                if spec.source_as_of_date is not None and day != spec.source_as_of_date:
+                    raise ValueError("delivery trade date differs from source_as_of_date")
+                exchange = row["exchange"].strip().upper()
+                if row.get("instrument_id", "").strip():
+                    matches = self._listing_for_eod(exchange, row["instrument_id"].strip(), row["symbol"].strip(), day)
+                else:
+                    matches = self._con.execute(
+                        """SELECT l.listing_id,l.security_id,lr.symbol FROM exchange_listing l
+                           JOIN exchange_listing_revision lr USING(listing_id)
+                           WHERE l.exchange=? AND lr.symbol=? AND coalesce(lr.series,'')=coalesce(?,'')
+                             AND lr.status='active' AND lr.effective_from<=?
+                             AND (lr.effective_to IS NULL OR lr.effective_to>=?)
+                             AND NOT EXISTS (SELECT 1 FROM exchange_listing_revision child
+                                             WHERE child.supersedes_listing_revision_id=lr.listing_revision_id)""",
+                        [exchange, row["symbol"].strip(), row.get("series", ""), day, day],
+                    ).fetchall()
+                if len(matches) != 1:
+                    self._quarantine(doc_id, locator, "unresolved_delivery_listing", f"expected one effective listing, found {len(matches)}", context.times.actual)
+                    quarantined += 1
+                    continue
+                listing_id, security_id, _ = matches[0]
+                batch_key = (listing_id, day)
+                if batch_key in seen_in_batch:
+                    rejected += 1
+                    continue
+                seen_in_batch.add(batch_key)
+                quantity_text = row.get("delivery_quantity", "").strip()
+                traded_text = row.get("volume", "").strip()
+                delivery_quantity = int(quantity_text) if quantity_text else None
+                traded_quantity = int(traded_text) if traded_text else None
+                delivery_percentage = self._decimal(row.get("delivery_percentage", ""), "delivery_percentage")
+                if delivery_quantity is not None and delivery_quantity < 0 or traded_quantity is not None and traded_quantity < 0:
+                    raise ValueError("delivery and traded quantities cannot be negative")
+                if delivery_percentage is not None and not Decimal(0) <= delivery_percentage <= Decimal(100):
+                    raise ValueError("delivery percentage is outside 0..100")
+                obs_id = self._stable_id("delivery", doc_id, spec.parser_version, locator)
+                self._registry_row(obs_id, "delivery", doc_id, spec, locator, context)
+                prior = self._con.execute(
+                    """SELECT current.observation_id FROM delivery_observation_revision current
+                       WHERE current.listing_id=? AND current.trade_date=?
+                         AND current.source_document_id IN (?,(SELECT supersedes_source_document_id FROM source_document_revision WHERE source_document_id=?))
+                         AND NOT EXISTS (SELECT 1 FROM delivery_observation_revision child WHERE child.supersedes_observation_id=current.observation_id)
+                       ORDER BY current.extraction_timestamp DESC LIMIT 1""",
+                    [listing_id, day, doc_id, doc_id],
+                ).fetchone()
+                self._con.execute(
+                    """INSERT INTO delivery_observation_revision
+                       (observation_id,observation_type,security_id,listing_id,exchange,trade_date,delivery_quantity_raw,
+                        traded_quantity_raw,delivery_percentage_raw,source_document_id,parser_version,extraction_timestamp,
+                        extraction_locator,quality_status,supersedes_observation_id)
+                       VALUES (?,'delivery',?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                    [obs_id, security_id, listing_id, exchange, day, delivery_quantity, traded_quantity,
+                     delivery_percentage, doc_id, spec.parser_version, context.times.actual, locator,
+                     "observed" if delivery_quantity is not None or delivery_percentage is not None else "missing",
+                     prior[0] if prior else None],
+                )
+                accepted += int(prior is None)
+                revised += int(prior is not None)
+            except (ValueError, KeyError, OverflowError) as exc:
+                self._quarantine(doc_id, locator, "invalid_delivery_row", str(exc), context.times.actual)
+                quarantined += 1
+        return accepted, rejected, quarantined, revised
+
+    def _read_provider_rows(self, spec: SyntheticFileSpec):
+        """Return normalized rows while retaining ``spec.path`` as the raw source."""
+        if spec.dataset == "nse_udiff_eod":
+            from hamsa.providers.official_eod import parse_nse_udiff
+            allowlist = {str(item).upper() for item in spec.parser_options.get("series_allowlist", [])}
+            if not allowlist:
+                raise ValueError("NSE UDiFF ingestion requires an explicit series_allowlist")
+            isin_values = spec.parser_options.get("isin_allowlist")
+            isin_allowlist = {str(item).upper() for item in isin_values} if isin_values else None
+            return (*parse_nse_udiff(spec.path, allowed_series=allowlist, isin_allowlist=isin_allowlist), "eod")
+        if spec.dataset == "nse_delivery":
+            from hamsa.providers.official_eod import parse_nse_delivery
+            symbols = spec.parser_options.get("symbols_allowlist")
+            symbol_allowlist = {str(item).upper() for item in symbols} if symbols else None
+            rows, lines, excluded = parse_nse_delivery(spec.path, symbols_allowlist=symbol_allowlist)
+            return rows, lines, excluded, "delivery"
+        if spec.dataset == "bse_stock_prices_eod":
+            from hamsa.providers.official_eod import parse_bse_stock_prices
+            mapping = spec.parser_options.get("listing_mapping")
+            rows, lines = parse_bse_stock_prices(spec.path, listing_mapping=mapping)
+            return rows, lines, 0, "eod"
+        if spec.dataset.startswith("security_master"):
+            required = {"exchange", "instrument_id", "symbol", "isin", "effective_from", "effective_to"}
+        elif spec.dataset.startswith("eod"):
+            required = {"trade_date", "exchange", "instrument_id", "symbol", "open", "high", "low", "close", "volume", "turnover", "price_unit", "volume_unit", "turnover_unit"}
+        elif spec.dataset.startswith("quarterly_results"):
+            required = {"isin", "metric", "value", "unit", "period_start", "period_end", "reporting_scope"}
+        elif spec.dataset.startswith("corporate_filings"):
+            required = {"filing_id", "isin", "action_type", "ex_date", "record_date", "effective_date", "terms_complete", "terms_json"}
+        else:
+            raise ValueError(f"no parser registered for dataset {spec.dataset!r}")
+        rows, lines = self._read_csv(spec.path, required)
+        kind = "eod" if spec.dataset.startswith("eod") else "financial" if spec.dataset.startswith("quarterly_results") else "filing"
+        return rows, lines, 0, kind
 
     def _ensure_metrics(self) -> None:
         descriptions = {"revenue": "Revenue", "net_profit": "Net profit", "cash_flow": "Cash flow", "capex": "Capital expenditure"}
@@ -749,17 +941,7 @@ class SyntheticIngestionPipeline:
         checksum = self._con.execute("SELECT checksum_sha256 FROM raw_source_file WHERE source_file_id=?", [source_file_id]).fetchone()[0]
         try:
             dataset = spec.dataset
-            if dataset.startswith("security_master"):
-                required = {"exchange", "instrument_id", "symbol", "isin", "effective_from", "effective_to"}
-            elif dataset.startswith("eod"):
-                required = {"trade_date", "exchange", "instrument_id", "symbol", "open", "high", "low", "close", "volume", "turnover", "price_unit", "volume_unit", "turnover_unit"}
-            elif dataset.startswith("quarterly_results"):
-                required = {"isin", "metric", "value", "unit", "period_start", "period_end", "reporting_scope"}
-            elif dataset.startswith("corporate_filings"):
-                required = {"filing_id", "isin", "action_type", "ex_date", "record_date", "effective_date", "terms_complete", "terms_json"}
-            else:
-                raise ValueError(f"no parser registered for synthetic dataset {dataset!r}")
-            rows, lines = self._read_csv(spec.path, required)
+            rows, lines, parser_excluded, data_kind = self._read_provider_rows(spec)
         except (UnicodeDecodeError, csv.Error, OSError, ValueError) as exc:
             with self.repository._transaction():
                 self._record_processing(doc_id, spec, context, status="failed", rejected=1, error=str(exc))
@@ -784,9 +966,45 @@ class SyntheticIngestionPipeline:
                 if dataset.startswith("security_master"):
                     accepted, quarantined, revised = self._persist_security_master(spec, source_file_id, doc_id, rows, lines, context)
                     result = FileIngestionResult(spec.source_identifier, checksum, accepted=accepted, quarantined=quarantined, revised=revised)
-                elif dataset.startswith("eod"):
+                elif data_kind == "eod":
+                    if dataset in {"nse_udiff_eod", "bse_stock_prices_eod"}:
+                        mapping_rows = []
+                        if dataset == "bse_stock_prices_eod":
+                            map_value = spec.parser_options.get("listing_mapping")
+                            if isinstance(map_value, Mapping):
+                                map_row = dict(map_value)
+                            elif isinstance(map_value, Sequence) and map_value and isinstance(map_value[0], Mapping):
+                                map_row = dict(map_value[0])
+                            else:
+                                map_row = {}
+                            mapping_is_usable = bool(rows) and all(row.get("_mapping_valid") for row in rows)
+                            if mapping_is_usable and str(map_row.get("isin", "")).upper() in self.identity_map:
+                                mapping_rows.append({"exchange":"BSE", "instrument_id":str(map_row["instrument_id"]),
+                                    "symbol":str(map_row["symbol"]), "isin":str(map_row["isin"]),
+                                    "effective_from":str(map_row["effective_from"]), "effective_to":"", "series":"EQ",
+                                    "company_name":str(map_row.get("company_name", "")),
+                                    "_source_locator":f"mapping:{map_row['evidence_reference']}"})
+                        else:
+                            for row in rows:
+                                if row.get("isin", "").upper() in self.identity_map:
+                                    mapping_rows.append({"exchange":"NSE", "instrument_id":row["instrument_id"],
+                                        "symbol":row["symbol"], "isin":row["isin"], "effective_from":row["trade_date"],
+                                        "effective_to":"", "series":row["series"],
+                                        "_source_locator":row.get("_source_locator", "")})
+                        if mapping_rows:
+                            self._persist_security_master(spec, source_file_id, doc_id, mapping_rows,
+                                                          list(range(1, len(mapping_rows)+1)), context)
                     accepted, rejected, quarantined, revised = self._persist_eod(spec, doc_id, rows, lines, context)
-                    result = FileIngestionResult(spec.source_identifier, checksum, accepted, rejected, quarantined, 0, revised)
+                    delivery = [row for row in rows if "delivery_quantity" in row or "delivery_percentage" in row]
+                    if delivery:
+                        da, dr, dq, drev = self._persist_delivery(spec, doc_id, delivery, list(range(1,len(delivery)+1)), context)
+                        accepted += da; rejected += dr; quarantined += dq; revised += drev
+                    result = FileIngestionResult(spec.source_identifier, checksum, accepted, rejected, quarantined,
+                                                 0, revised, out_of_scope=parser_excluded)
+                elif data_kind == "delivery":
+                    accepted, rejected, quarantined, revised = self._persist_delivery(spec, doc_id, rows, lines, context)
+                    result = FileIngestionResult(spec.source_identifier, checksum, accepted, rejected, quarantined,
+                                                 0, revised, out_of_scope=parser_excluded)
                 elif dataset.startswith("quarterly_results"):
                     accepted, rejected, quarantined, revised = self._persist_financials(spec, doc_id, rows, lines, context)
                     result = FileIngestionResult(spec.source_identifier, checksum, accepted, rejected, quarantined, 0, revised)

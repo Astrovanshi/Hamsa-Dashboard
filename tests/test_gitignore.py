@@ -19,6 +19,7 @@ class GitIgnoreTests(unittest.TestCase):
         for path in (
             "data/raw/example.csv",
             "data/processed/cache.parquet",
+            "configs/real_eod.local.json",
             "local.duckdb",
             "state.sqlite3",
             ".env",
@@ -38,6 +39,7 @@ class GitIgnoreTests(unittest.TestCase):
         for path in (
             ".env.example",
             "configs/policies.example.toml",
+            "configs/real_eod.example.json",
             "sql/duckdb_schema.sql",
             "docs/architecture.md",
             "tests/test_point_in_time.py",
