@@ -72,7 +72,7 @@ Canonical units are INR/share for prices, INR for monetary amounts and turnover,
 - Future portfolio modules will use separate company/security, broker/account, position, and transaction repositories. A reconstruction service will consume immutable transactions plus versioned corporate-action rules; a reconciliation service will compare results with broker holdings snapshots without fabricating trades.
 - Local CSV import is the initial broker boundary. Imported originals, checksums, parser/extraction provenance, row-level quarantine, and user-selected account/mandate mapping are retained. The application stores no broker credentials and makes no broker API calls in this scope.
 - Dossier evidence links to source documents and observations; portfolio analytics links to position transactions, cash flows, and reconstruction version. Neither changes the five-engine screening boundary.
-- No provider, dashboard, or five screening engines are implemented in this milestone.
+- The MVP implements a local Streamlit research workspace, transparent discovery-engine calculations, and the human Hamsa 11/company thesis workflow. Source admission and screening still fail closed when verified evidence is missing. Broker integrations and portfolio reconstruction remain future work.
 
 Raw data, local databases, secrets, credentials, keys/certificates, logs, caches, and virtual environments are excluded by `.gitignore`. Only code, SQL schemas, docs, policy examples, and synthetic fixtures belong in Git.
 

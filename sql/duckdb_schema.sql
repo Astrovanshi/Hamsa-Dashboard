@@ -163,6 +163,53 @@ CREATE TABLE IF NOT EXISTS security_identifier_revision (
     UNIQUE (identifier_type, identifier_value, effective_from)
 );
 
+-- Append-only review decisions for ISIN identity candidates.
+-- security_identifier_revision rows remain immutable after creation.
+-- This table is the authoritative source for approval/rejection state.
+-- recorded_at = "earliest cutoff at which this decision is visible in HAMSA."
+-- For new rows it equals datetime.now() at write time.
+-- See migration 0004_identifier_revision_review.sql for backfill semantics.
+CREATE TABLE IF NOT EXISTS security_identifier_revision_review (
+    review_id                   VARCHAR     PRIMARY KEY,
+    identifier_revision_id      VARCHAR     NOT NULL
+        REFERENCES security_identifier_revision(identifier_revision_id),
+    review_status               VARCHAR     NOT NULL
+        CHECK (review_status IN ('pending', 'approved', 'rejected')),
+    recorded_at                 TIMESTAMPTZ NOT NULL,
+    reviewed_by                 VARCHAR,
+    reviewer_actor_type         VARCHAR
+        CHECK (reviewer_actor_type IN ('human', 'system', 'provider', 'legacy_unknown')),
+    reviewed_at                 TIMESTAMPTZ,
+    evidence_source_document_id VARCHAR
+        REFERENCES source_document_revision(source_document_id),
+    evidence_locator            VARCHAR,
+    rationale                   VARCHAR,
+    supersedes_review_id        VARCHAR,
+    UNIQUE (review_id, identifier_revision_id),
+    UNIQUE (supersedes_review_id),
+    FOREIGN KEY (supersedes_review_id, identifier_revision_id)
+        REFERENCES security_identifier_revision_review(review_id, identifier_revision_id),
+    CHECK (
+        (review_status = 'pending'
+            AND reviewed_by                 IS NULL
+            AND reviewed_at                 IS NULL
+            AND evidence_source_document_id IS NULL
+            AND evidence_locator            IS NULL)
+     OR (review_status = 'rejected'
+            AND reviewed_by  IS NOT NULL
+            AND reviewed_at  IS NOT NULL)
+     OR (review_status = 'approved'
+            AND reviewed_by                 IS NOT NULL
+            AND reviewed_at                 IS NOT NULL
+            AND evidence_source_document_id IS NOT NULL
+            AND evidence_locator            IS NOT NULL
+            AND length(evidence_locator)    > 0)
+    )
+);
+
+CREATE INDEX IF NOT EXISTS idx_identifier_review_candidate
+    ON security_identifier_revision_review (identifier_revision_id, recorded_at);
+
 CREATE TABLE IF NOT EXISTS entity_relationship_revision (
     relationship_id VARCHAR PRIMARY KEY,
     from_entity_id VARCHAR NOT NULL REFERENCES issuer_entity(entity_id),

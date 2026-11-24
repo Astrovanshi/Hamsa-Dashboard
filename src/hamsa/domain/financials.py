@@ -55,6 +55,7 @@ class FinancialObservationRevision:
     quality_reason: str | None = None
     formula_version: str | None = None
     replay_timestamp: datetime | None = None
+    conversion_rule_id: str | None = None
 
     def __post_init__(self) -> None:
         if self.revision_number < 1:

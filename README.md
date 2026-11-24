@@ -1,21 +1,32 @@
-# HAMSA Radar
+# HAMSA
 
-HAMSA is a local, EOD-only Indian equity research workspace for NSE and BSE equities. Issuer identity, share-security identity, and exchange listing identity are modeled separately. NSE/BSE listings with the same ISIN share a security identity while retaining venue-specific history.
+HAMSA is a local, end-of-day Indian equity investment research workspace. It preserves NSE and BSE listings separately, keys security identity by reviewed ISIN mappings, and admits only officially evidenced mainboard ordinary equity. It produces research flags, never automatic buy/sell recommendations.
 
-## Guardrails
+## Run locally
 
-- 15:30 Asia/Kolkata EOD cutoff and versioned exchange calendars, including holidays and special sessions.
-- Raw source files, EOD prices, filing revisions, and dossier reviews are append-only.
-- Public-as-of and HAMSA-known-as-of historical modes are independent.
-- Corporate-action adjusted prices are derived, versioned views; raw observations remain unchanged.
-- Every normalized observation retains source document, checksum, parser, extraction location, and revision lineage.
-- Missing, stale, invalid, conflicted, and not-applicable remain distinct; null never becomes zero.
-- Financial and industrial classifications remain separate. Capex-heavy firms cannot be excluded solely for current ROCE or FCF.
-- NSE/BSE prices are never averaged. Venue selection and any combined traded-activity calculation must be explicit.
-- Human-authored Hamsa 11 statuses are not automated. HAMSA never makes buy/sell recommendations.
+Use Python 3.11 and the declared project dependencies. In an environment where the already-declared Streamlit dependency is available:
 
-## Milestone status
+```powershell
+.\.venv\Scripts\python.exe -m pip install -e .
+.\.venv\Scripts\python.exe -m streamlit run app.py
+```
 
-This second-pass milestone updates the data model, point-in-time helpers, quality/provenance contracts, corporate-action and venue policies, synthetic tests, and Git ignore rules. It does not install packages, acquire external data, activate providers, implement the five screening engines, or build the dashboard.
+The app creates its local analytical DuckDB at `data/processed/hamsa.duckdb` and human-review SQLite ledger at `data/processed/hamsa_reviews.sqlite3`. Both paths can be changed with `HAMSA_DUCKDB_PATH` and `HAMSA_REVIEW_DB_PATH`. Raw input and database files are ignored by Git.
 
-See [docs/architecture.md](docs/architecture.md) and [docs/data-model.md](docs/data-model.md).
+Copy `configs/screening.example.json` to the ignored `configs/screening.local.json` to map source financial metric codes and configure local thresholds. The numerical liquidity thresholds are deliberately unset: HAMSA does not define “unusual” by an unapproved default. Financial-sector screens are also blocked until a separate approved profile exists.
+
+## Data operation
+
+Data access is local-file-only. No exchange endpoint is called by the app. The supported official EOD and calendar command examples are in [docs/real-eod-ingestion.md](docs/real-eod-ingestion.md) and [docs/exchange-calendar-ingestion.md](docs/exchange-calendar-ingestion.md). A selected EOD file remains quarantined or unresolved until its identity and classification evidence is reviewed. TejHQ remains a bounded secondary pilot; no bulk backfill is run.
+
+Run the portable suite with:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_tests.py
+```
+
+## Current data limitations
+
+This workspace currently has one-session NSE/BSE SBI EOD examples and retained source samples, but no production exchange calendar versions, no approved complete current mainboard universe, and no normalized financial history. NSE ordinary-equity classification and BSE current mainboard/ordinary-equity evidence remain unresolved. In that state the app shows data and blockers but runs no discovery engine against unqualified securities.
+
+The product architecture and current milestone status are maintained in [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md) and [docs/MILESTONE_TRACKER.md](docs/MILESTONE_TRACKER.md).

@@ -89,8 +89,8 @@ class DuckDBSchemaIntegrationTests(TestCase):
     def test_schema_executes_and_metadata_types_indexes_constraints_transactions(self):
         con = self.connection()
         tables = con.execute("SELECT count(*) FROM information_schema.tables WHERE table_schema='main'").fetchone()[0]
-        self.assertEqual(tables, 39)
-        self.assertEqual(con.execute("SELECT count(*) FROM duckdb_indexes() WHERE schema_name='main'").fetchone()[0], 4)
+        self.assertEqual(tables, 40)
+        self.assertEqual(con.execute("SELECT count(*) FROM duckdb_indexes() WHERE schema_name='main'").fetchone()[0], 5)
         self.assertEqual(con.execute("SELECT current_version,current_migration FROM schema_metadata").fetchone(), (1, "0001_initial_analytics"))
         self.assertEqual(con.execute("SELECT data_type FROM information_schema.columns WHERE table_name='financial_observation_revision' AND column_name='period_start'").fetchone()[0], "DATE")
 
@@ -105,6 +105,10 @@ class DuckDBSchemaIntegrationTests(TestCase):
             con.execute("INSERT INTO schema_metadata VALUES ('bad-schema', 0, 'bad', CURRENT_TIMESTAMP)")
         with self.assertRaises(duckdb.ConstraintException):
             con.execute("INSERT INTO security_identifier_revision VALUES ('bad', 'unknown-security', 'ISIN', 'X', DATE '2020-01-01', NULL, 'missing-doc', 'approved', NULL, NULL, NULL)")
+        with self.assertRaises(duckdb.ConstraintException):
+            con.execute("INSERT INTO security_identifier_revision_review VALUES ('bad-rev', 'unknown-ident', 'pending', CURRENT_TIMESTAMP, NULL, NULL, NULL, NULL, NULL, NULL, NULL)")
+        with self.assertRaises(duckdb.ConstraintException):
+            con.execute("INSERT INTO security_identifier_revision_review VALUES ('bad-rev', 'unknown-ident', 'bad-status', CURRENT_TIMESTAMP, NULL, NULL, NULL, NULL, NULL, NULL, NULL)")
         with self.assertRaises(duckdb.ConstraintException):
             con.execute("INSERT INTO observation_lineage_input VALUES ('missing', 'financial', 'also-missing', 'eod_price', 'formula-1')")
         with self.assertRaises(duckdb.ConstraintException):
@@ -364,9 +368,9 @@ class DuckDBSchemaIntegrationTests(TestCase):
                 repo._connection.execute("INSERT INTO issuer_entity VALUES ('persisted', CURRENT_TIMESTAMP)")
             with DuckDBRepository(path) as reopened:
                 self.assertEqual(reopened._connection.execute("SELECT entity_id FROM issuer_entity").fetchall(), [("persisted",)])
-                self.assertEqual(reopened._connection.execute("SELECT current_version FROM schema_metadata").fetchone()[0], 2)
+                self.assertEqual(reopened._connection.execute("SELECT current_version FROM schema_metadata").fetchone()[0], 6)
                 migration_checksum = reopened._connection.execute("SELECT migration_checksum_sha256 FROM schema_migration WHERE migration_id='0001_initial_analytics'").fetchone()[0]
-                self.assertEqual(migration_checksum, sha256(SCHEMA.read_bytes()).hexdigest())
+                self.assertEqual(migration_checksum, DuckDBRepository.BASELINE_SCHEMA_CHECKSUM)
 
 
 if __name__ == "__main__":

@@ -124,7 +124,7 @@ class SyntheticIngestionPipeline:
         *,
         archive_root: Path,
         metric_units: Mapping[str, str],
-        identity_map: Mapping[str, tuple[str, str]],
+        identity_map: Mapping[str, tuple[str, str]] | None = None,
         parser_version: str,
         replay_mode: bool = False,
         replay_clock: Callable[[], datetime] | None = None,
@@ -132,8 +132,8 @@ class SyntheticIngestionPipeline:
     ) -> None:
         if not metric_units:
             raise ValueError("metric_units must be explicitly configured")
-        if not identity_map:
-            raise ValueError("identity_map must contain explicitly reviewed synthetic mappings")
+        if identity_map is not None and len(identity_map) == 0:
+            raise ValueError("identity_map must contain explicitly reviewed synthetic mappings when provided")
         if not parser_version:
             raise ValueError("parser_version is required")
         if replay_mode != (replay_clock is not None):
@@ -145,7 +145,7 @@ class SyntheticIngestionPipeline:
         self.metric_units = dict(metric_units)
         normalized_identity_map: dict[str, tuple[str, str]] = {}
         security_isins: dict[str, set[str]] = {}
-        for isin, ids in identity_map.items():
+        for isin, ids in (identity_map or {}).items():
             normalized_isin = isin.strip().upper()
             if len(ids) != 2 or not all(str(value).strip() for value in ids):
                 raise ValueError(f"identity mapping for {normalized_isin!r} must contain issuer and security IDs")
@@ -522,11 +522,25 @@ class SyntheticIngestionPipeline:
                        (identifier_revision_id,security_id,identifier_type,identifier_value,effective_from,effective_to,
                         source_document_id,mapping_review_status,reviewed_by,reviewed_at,supersedes_identifier_revision_id,
                         parser_version,extraction_timestamp,extraction_locator,extraction_revision_id)
-                       VALUES (?,?, 'ISIN', ?,?,?,?,'approved',?,?,NULL,?,?,?,?)""",
+                       VALUES (?,?, 'ISIN', ?,?,?,?,'pending',NULL,NULL,NULL,?,?,?,?)""",
                     [identifier_id, security_id, listing.company_isin, candidate.effective_from,
-                     candidate.effective_to, doc_id, spec.provider, context.times.actual, spec.parser_version,
+                     candidate.effective_to, doc_id, spec.parser_version,
                      context.times.actual, candidate.extraction_locator,
                      context.processing_revision_id],
+                )
+                # Automated approval: system/provider acts as reviewer.
+                # Recorded as a machine decision, not a human review.
+                review_id = self._stable_id("idrev", identifier_id, "approved", doc_id)
+                self._con.execute(
+                    """INSERT INTO security_identifier_revision_review
+                       (review_id,identifier_revision_id,review_status,recorded_at,
+                        reviewed_by,reviewer_actor_type,reviewed_at,evidence_source_document_id,evidence_locator,
+                        rationale,supersedes_review_id)
+                       VALUES (?,?,?,?,?,?,?,?,?,?,NULL)""",
+                    [review_id, identifier_id, "approved", context.times.actual,
+                     spec.provider, "provider", context.times.actual,
+                     doc_id, candidate.extraction_locator,
+                     f"Automated ingestion approval by {spec.provider}"],
                 )
             prior_listing_revision = self._con.execute(
                 "SELECT listing_revision_id FROM exchange_listing_revision WHERE listing_id=? ORDER BY effective_from DESC,listing_revision_id DESC LIMIT 1",
@@ -779,18 +793,31 @@ class SyntheticIngestionPipeline:
             required = {"exchange", "instrument_id", "symbol", "isin", "effective_from", "effective_to"}
         elif spec.dataset.startswith("eod"):
             required = {"trade_date", "exchange", "instrument_id", "symbol", "open", "high", "low", "close", "volume", "turnover", "price_unit", "volume_unit", "turnover_unit"}
-        elif spec.dataset.startswith("quarterly_results"):
+        elif spec.dataset.startswith(("quarterly_results", "financial_results")):
             required = {"isin", "metric", "value", "unit", "period_start", "period_end", "reporting_scope"}
         elif spec.dataset.startswith("corporate_filings"):
             required = {"filing_id", "isin", "action_type", "ex_date", "record_date", "effective_date", "terms_complete", "terms_json"}
         else:
             raise ValueError(f"no parser registered for dataset {spec.dataset!r}")
         rows, lines = self._read_csv(spec.path, required)
-        kind = "eod" if spec.dataset.startswith("eod") else "financial" if spec.dataset.startswith("quarterly_results") else "filing"
+        kind = "eod" if spec.dataset.startswith("eod") else "financial" if spec.dataset.startswith(("quarterly_results", "financial_results")) else "filing"
         return rows, lines, 0, kind
 
     def _ensure_metrics(self) -> None:
-        descriptions = {"revenue": "Revenue", "net_profit": "Net profit", "cash_flow": "Cash flow", "capex": "Capital expenditure"}
+        descriptions = {
+            "revenue": "Revenue",
+            "pat": "Profit after tax",
+            "roce": "Return on capital employed",
+            "operating_margin": "Operating margin",
+            "cfo": "Cash flow from operations",
+            "fcf": "Free cash flow",
+            "capex": "Capital expenditure",
+            "cwip": "Capital work in progress",
+            "gross_block": "Gross block",
+            "market_cap": "Market capitalisation",
+            "net_profit": "Net profit",
+            "cash_flow": "Cash flow",
+        }
         for metric, canonical_unit in self.metric_units.items():
             unit = self._con.execute("SELECT dimension FROM canonical_unit WHERE unit_code=?", [canonical_unit]).fetchone()
             if unit is None:
@@ -817,11 +844,23 @@ class SyntheticIngestionPipeline:
                     quarantined += 1
                     continue
                 canonical_unit = self.metric_units[metric]
-                if unit != canonical_unit:
-                    self._quarantine(doc_id, locator, "invalid_or_unreviewed_unit", f"{unit!r} cannot be converted to {canonical_unit!r}", context.times.actual)
-                    quarantined += 1
-                    continue
                 raw_value = self._decimal(row["value"], "value")
+                conversion_rule_id = None
+                canonical_value = raw_value
+                if unit != canonical_unit:
+                    rules = self._con.execute(
+                        """SELECT conversion_rule_id,multiplier,additive_offset
+                           FROM unit_conversion_rule_revision
+                           WHERE source_unit=? AND canonical_unit=? AND review_status='approved'""",
+                        [unit, canonical_unit],
+                    ).fetchall()
+                    if len(rules) != 1:
+                        self._quarantine(doc_id, locator, "invalid_or_unreviewed_unit", f"{unit!r} cannot be converted to {canonical_unit!r}", context.times.actual)
+                        quarantined += 1
+                        continue
+                    conversion_rule_id, multiplier, offset = rules[0]
+                    if raw_value is not None:
+                        canonical_value = raw_value * Decimal(str(multiplier)) + Decimal(str(offset))
                 period_start = self._date(row["period_start"], "period_start")
                 period_end = self._date(row["period_end"], "period_end")
                 if period_start > period_end:
@@ -829,8 +868,15 @@ class SyntheticIngestionPipeline:
                 # The canonical issuer identity is resolved from an approved ISIN mapping.
                 mapping = self._con.execute(
                     """SELECT e.issuer_entity_id FROM security_identifier_revision i
+                       JOIN security_identifier_revision_review r
+                         ON r.identifier_revision_id=i.identifier_revision_id
+                        AND r.review_status='approved'
+                        AND NOT EXISTS (
+                          SELECT 1 FROM security_identifier_revision_review s
+                          WHERE s.supersedes_review_id=r.review_id
+                        )
                        JOIN equity_security e USING(security_id)
-                       WHERE i.identifier_value=? AND i.mapping_review_status='approved'
+                       WHERE i.identifier_value=?
                          AND i.effective_from<=? AND (i.effective_to IS NULL OR i.effective_to>=?)""",
                     [row["isin"].strip().upper(), period_end, period_end],
                 ).fetchall()
@@ -858,7 +904,7 @@ class SyntheticIngestionPipeline:
                 quality = QualityStatus.MISSING if raw_value is None else QualityStatus.OBSERVED
                 obs = FinancialObservationRevision(
                     observation_id=observation_id, subject_id=subject_id, metric=metric,
-                    raw_value=raw_value, raw_unit=unit, canonical_value=raw_value,
+                    raw_value=raw_value, raw_unit=unit, canonical_value=canonical_value,
                     canonical_unit=canonical_unit, period_start=period_start, period_end=period_end,
                     source_document_date=spec.source_document_date, publication_date=spec.publication_date,
                     publication_precision=PublicationPrecision.TIMESTAMP if spec.published_at else PublicationPrecision.DATE_ONLY,
@@ -872,6 +918,7 @@ class SyntheticIngestionPipeline:
                     extraction_timestamp=context.times.actual,
                     supersedes_observation_id=existing[0] if existing else None,
                     replay_timestamp=context.times.replay,
+                    conversion_rule_id=conversion_rule_id,
                 )
                 self.repository.append_financial_observation(obs, extraction_revision_id=context.processing_revision_id)
                 accepted += int(existing is None)
@@ -894,7 +941,15 @@ class SyntheticIngestionPipeline:
                 terms = json.loads(row["terms_json"] or "{}")
                 complete = row["terms_complete"].strip().lower() == "true"
                 mapping = self._con.execute(
-                    "SELECT security_id FROM security_identifier_revision WHERE identifier_value=? AND mapping_review_status='approved'",
+                    """SELECT i.security_id FROM security_identifier_revision i
+                       JOIN security_identifier_revision_review r
+                         ON r.identifier_revision_id=i.identifier_revision_id
+                        AND r.review_status='approved'
+                        AND NOT EXISTS (
+                          SELECT 1 FROM security_identifier_revision_review s
+                          WHERE s.supersedes_review_id=r.review_id
+                        )
+                       WHERE i.identifier_value=?""",
                     [row["isin"].strip().upper()],
                 ).fetchall()
                 if len(mapping) != 1:
@@ -1005,7 +1060,7 @@ class SyntheticIngestionPipeline:
                     accepted, rejected, quarantined, revised = self._persist_delivery(spec, doc_id, rows, lines, context)
                     result = FileIngestionResult(spec.source_identifier, checksum, accepted, rejected, quarantined,
                                                  0, revised, out_of_scope=parser_excluded)
-                elif dataset.startswith("quarterly_results"):
+                elif data_kind == "financial":
                     accepted, rejected, quarantined, revised = self._persist_financials(spec, doc_id, rows, lines, context)
                     result = FileIngestionResult(spec.source_identifier, checksum, accepted, rejected, quarantined, 0, revised)
                 else:

@@ -1,0 +1,32 @@
+{
+  "profile_version": "hamsa-discovery-v1",
+  "metric_codes": {
+    "sales": "revenue",
+    "pat": "pat",
+    "roce": "roce",
+    "operating_margin": "operating_margin",
+    "cfo": "cfo",
+    "fcf": "fcf",
+    "capex": "capex",
+    "cwip": "cwip",
+    "gross_block": "gross_block"
+  },
+  "thresholds": {
+    "sales_cagr_min": 0.12,
+    "pat_cagr_min": 0.12,
+    "roce_min": 12.0,
+    "earnings_sales_growth_min": 0.20,
+    "earnings_pat_growth_min": 0.25,
+    "cash_cfo_pat_min": 0.8,
+    "unusual_volume_multiple": null,
+    "unusual_delivery_percentage_points": null
+  },
+  "financial_sector_profiles": {},
+  "venue_policy": {
+    "primary_exchange": null,
+    "fallback_exchange": null,
+    "combined_activity_allowed": false,
+    "combined_activity_rule": null
+  },
+  "freshness_policies": {}
+}
