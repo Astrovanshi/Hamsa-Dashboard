@@ -71,6 +71,7 @@ export const Layout: React.FC<LayoutProps> = ({ currentTab, onSelectTab, childre
     {
       title: 'SYSTEM & INTEGRITY',
       items: [
+        { id: 'universe-lifecycle', label: 'Universe Lifecycle', icon: Layers, badge: '3 TIERS' },
         { id: 'data-coverage', label: 'Data Coverage', icon: Database },
         { id: 'system-health', label: 'System Health', icon: Server },
       ],

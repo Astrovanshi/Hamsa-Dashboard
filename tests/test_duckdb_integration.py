@@ -368,7 +368,7 @@ class DuckDBSchemaIntegrationTests(TestCase):
                 repo._connection.execute("INSERT INTO issuer_entity VALUES ('persisted', CURRENT_TIMESTAMP)")
             with DuckDBRepository(path) as reopened:
                 self.assertEqual(reopened._connection.execute("SELECT entity_id FROM issuer_entity").fetchall(), [("persisted",)])
-                self.assertEqual(reopened._connection.execute("SELECT current_version FROM schema_metadata").fetchone()[0], 6)
+                self.assertEqual(reopened._connection.execute("SELECT current_version FROM schema_metadata").fetchone()[0], 7)
                 migration_checksum = reopened._connection.execute("SELECT migration_checksum_sha256 FROM schema_migration WHERE migration_id='0001_initial_analytics'").fetchone()[0]
                 self.assertEqual(migration_checksum, DuckDBRepository.BASELINE_SCHEMA_CHECKSUM)
 

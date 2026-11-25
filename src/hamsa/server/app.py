@@ -32,6 +32,7 @@ from hamsa.screening.data_access import (
     market_radar_snapshot,
 )
 from hamsa.screening.engines import EngineThresholds, evaluate_company
+from hamsa.screening.tiered_universe import TieredUniverseManager, IntelligenceTier, TransitionType
 from hamsa.storage.duckdb_repository import DuckDBRepository
 
 SQLITE_SCHEMA = ROOT / "sql" / "sqlite_schema.sql"
@@ -274,6 +275,7 @@ class HamsaServer:
 
             result.append(
                 {
+                    "tier": TieredUniverseManager(repo, reviews).get_current_tier(ent),
                     "identity": {
                         "entityId": row[0],
                         "companyName": row[1],
@@ -392,6 +394,29 @@ class HamsaServer:
             )
         return result
 
+    def get_tier_breakdown(self) -> dict:
+        repo, reviews = self._get_context()
+        mgr = TieredUniverseManager(repo, reviews)
+        return mgr.get_tier_breakdown()
+
+    def get_lifecycle_history(self, entity_id: str) -> list[dict]:
+        repo, reviews = self._get_context()
+        mgr = TieredUniverseManager(repo, reviews)
+        return mgr.get_lifecycle_history(entity_id)
+
+    def transition_tier(self, entity_id: str, new_tier: str, reason: str, reviewer: str = "hamsa-analyst") -> dict:
+        repo, reviews = self._get_context()
+        mgr = TieredUniverseManager(repo, reviews)
+        tier_enum = IntelligenceTier(new_tier.upper())
+        event_id = mgr.record_tier_transition(
+            entity_id=entity_id,
+            new_tier=tier_enum,
+            transition_type=TransitionType.HUMAN_REVIEW,
+            primary_trigger="Manual Terminal Transition",
+            trigger_detail=reason,
+            recorded_by=reviewer,
+        )
+        return {"status": "success", "event_id": event_id, "new_tier": tier_enum.value}
     def get_discovery_feed(self) -> list[dict]:
         return [
             {
@@ -562,6 +587,13 @@ def make_handler(hamsa_backend: HamsaServer):
                     self._respond_json(HTTPStatus.OK, found)
                 else:
                     self._respond_json(HTTPStatus.NOT_FOUND, {"error": f"Company {symbol} not found"})
+            elif path == "/api/tiers":
+                body = hamsa_backend.get_tier_breakdown()
+                self._respond_json(HTTPStatus.OK, body)
+            elif path.startswith("/api/tiers/history/"):
+                ent_id = path.split("/")[-1].lower()
+                body = hamsa_backend.get_lifecycle_history(ent_id)
+                self._respond_json(HTTPStatus.OK, body)
             elif path == "/api/feed":
                 body = hamsa_backend.get_discovery_feed()
                 self._respond_json(HTTPStatus.OK, body)
@@ -592,6 +624,19 @@ def make_handler(hamsa_backend: HamsaServer):
                 except Exception as exc:
                     self._respond_json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": str(exc)})
 
+            elif path == "/api/tiers/transition":
+                entity_id = payload.get("entityId")
+                new_tier = payload.get("newTier")
+                reason = payload.get("reason", "Manual review")
+                author = payload.get("author", "hamsa-analyst")
+                if not entity_id or not new_tier:
+                    self._respond_json(HTTPStatus.BAD_REQUEST, {"error": "entityId and newTier required"})
+                    return
+                try:
+                    res = hamsa_backend.transition_tier(entity_id, new_tier, reason, author)
+                    self._respond_json(HTTPStatus.OK, res)
+                except Exception as exc:
+                    self._respond_json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": str(exc)})
             elif path == "/api/watchlist":
                 entity_id = payload.get("entityId")
                 status = payload.get("status")

@@ -1,5 +1,6 @@
 import {
   CompanyDossier,
+  IntelligenceTier,
   MarketRadarSummary,
   IntelligenceFeedItem,
   SystemHealthMetric,
@@ -153,6 +154,25 @@ class HamsaDataService {
     return this.health!;
   }
 
+  public async transitionTier(entityId: string, newTier: IntelligenceTier, reason: string = 'Manual UI transition'): Promise<void> {
+    await this.ensureDataLoaded();
+    const comp = this.companies.find((c) => c.identity.entityId === entityId);
+    if (comp) {
+      comp.tier = newTier;
+    }
+
+    if (this.isLiveConnected) {
+      try {
+        await fetch(`${this.apiBaseUrl}/api/tiers/transition`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ entityId, newTier, reason, author: 'terminal-ui' }),
+        });
+      } catch (err) {
+        console.warn('Failed to sync tier transition to live backend:', err);
+      }
+    }
+  }
   public async updateWatchlist(entityId: string, status: 'research_priority' | 'watch' | 'unassigned' | 'archive'): Promise<void> {
     await this.ensureDataLoaded();
     const comp = this.companies.find((c) => c.identity.entityId === entityId);

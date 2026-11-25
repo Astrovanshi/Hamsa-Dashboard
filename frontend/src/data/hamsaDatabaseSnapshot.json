@@ -151,6 +151,7 @@
   ],
   "companies": [
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-abb",
         "companyName": "ABB India Limited",
@@ -1748,6 +1749,7 @@
       ]
     },
     {
+      "tier": "INVESTIGATION",
       "identity": {
         "entityId": "issuer-aiaeng",
         "companyName": "AIA Engineering Limited",
@@ -5546,6 +5548,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-axisbank",
         "companyName": "Axis Bank Limited",
@@ -7611,6 +7614,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-bajfinance",
         "companyName": "Bajaj Finance Limited",
@@ -12016,6 +12020,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-bel",
         "companyName": "Bharat Electronics Limited",
@@ -15816,6 +15821,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-bhartiartl",
         "companyName": "Bharti Airtel Limited",
@@ -19615,6 +19621,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-bluejet",
         "companyName": "Blue Jet Healthcare Limited",
@@ -22842,6 +22849,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-coforge",
         "companyName": "Coforge Limited",
@@ -26308,6 +26316,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-cumminsind",
         "companyName": "Cummins India Limited",
@@ -30111,6 +30120,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-devyani",
         "companyName": "Devyani International Limited",
@@ -33911,6 +33921,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-dixon",
         "companyName": "Dixon Technologies (India) Limited",
@@ -37721,6 +37732,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-fincables",
         "companyName": "Finolex Cables Limited",
@@ -41525,6 +41537,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-hal",
         "companyName": "Hindustan Aeronautics Limited",
@@ -44998,6 +45011,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-happyforge",
         "companyName": "Happy Forgings Limited",
@@ -48220,6 +48234,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-hdfcbank",
         "companyName": "HDFC Bank Limited",
@@ -50284,6 +50299,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-icicibank",
         "companyName": "ICICI Bank Limited",
@@ -52345,6 +52361,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-infy",
         "companyName": "Infosys Limited",
@@ -56145,6 +56162,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-itc",
         "companyName": "ITC Limited",
@@ -59942,6 +59960,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-jublfood",
         "companyName": "Jubilant Foodworks Limited",
@@ -63742,6 +63761,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-kotakbank",
         "companyName": "Kotak Mahindra Bank Limited",
@@ -65349,6 +65369,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-lodha",
         "companyName": "Lodha Developers Limited",
@@ -69140,6 +69161,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-lt",
         "companyName": "Larsen & Toubro Limited",
@@ -72918,6 +72940,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-maruti",
         "companyName": "Maruti Suzuki India Limited",
@@ -76715,6 +76738,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-neulandlab",
         "companyName": "Neuland Laboratories Limited",
@@ -80515,6 +80539,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-persistent",
         "companyName": "Persistent Systems Limited",
@@ -84315,6 +84340,7 @@
       ]
     },
     {
+      "tier": "INVESTIGATION",
       "identity": {
         "entityId": "issuer-polycab",
         "companyName": "Polycab India Limited",
@@ -88151,6 +88177,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-rain",
         "companyName": "Rain Industries Limited",
@@ -92100,6 +92127,7 @@
       ]
     },
     {
+      "tier": "INVESTIGATION",
       "identity": {
         "entityId": "issuer-rategain",
         "companyName": "Rategain Travel Technologies Limited",
@@ -95908,6 +95936,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-reliance",
         "companyName": "Reliance Industries Limited",
@@ -99464,6 +99493,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-sbin",
         "companyName": "State Bank of India",
@@ -101528,6 +101558,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-sunpharma",
         "companyName": "Sun Pharmaceutical Industries Limited",
@@ -105328,6 +105359,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-supriya",
         "companyName": "Supriya Lifescience Limited",
@@ -109136,6 +109168,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-tatatech",
         "companyName": "Tata Technologies Limited",
@@ -111919,6 +111952,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-tcs",
         "companyName": "Tata Consultancy Services Limited",
@@ -115719,6 +115753,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-tennind",
         "companyName": "Tenneco Clean Air India Limited",
@@ -117552,6 +117587,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-thermax",
         "companyName": "Thermax Limited",
@@ -121353,6 +121389,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-titan",
         "companyName": "Titan Company Limited",
@@ -125150,6 +125187,7 @@
       ]
     },
     {
+      "tier": "INVESTIGATION",
       "identity": {
         "entityId": "issuer-trent",
         "companyName": "Trent Limited",
@@ -128958,6 +128996,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-v2retail",
         "companyName": "V2 Retail Limited",
@@ -131800,6 +131839,7 @@
       ]
     },
     {
+      "tier": "CANDIDATE",
       "identity": {
         "entityId": "issuer-voltas",
         "companyName": "Voltas Limited",
@@ -135604,7 +135644,7 @@
     "status": "healthy",
     "server": "HAMSA Analytical REST Server",
     "databaseVersion": "DuckDB 2.0.0",
-    "schemaVersion": 6,
+    "schemaVersion": 7,
     "duckdbSizeBytes": 95956992,
     "sqliteSizeBytes": 135168,
     "totalFinancialObservations": 13864,
@@ -135614,5 +135654,12 @@
     "admittedIssuers": 40,
     "pitCutoffHour": "15:30 Asia/Kolkata",
     "dataFreshnessDate": "2026-11-09"
+  },
+  "tiers": {
+    "RADAR": 0,
+    "CANDIDATE": 36,
+    "INVESTIGATION": 4,
+    "WATCH": 0,
+    "ARCHIVED": 0
   }
 }

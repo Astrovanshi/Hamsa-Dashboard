@@ -1,3 +1,15 @@
+export type IntelligenceTier = 'RADAR' | 'CANDIDATE' | 'INVESTIGATION' | 'WATCH' | 'ARCHIVED';
+
+export interface CompanyLifecycleEvent {
+  event_id: string;
+  previous_tier: string;
+  new_tier: IntelligenceTier;
+  timestamp: string;
+  transition_type: string;
+  primary_trigger: string;
+  trigger_detail?: string;
+  recorded_by: string;
+}
 export type EngineType =
   | 'compounders'
   | 'earnings_inflection'
@@ -95,6 +107,7 @@ export interface Hamsa11Gate {
 }
 
 export interface CompanyDossier {
+  tier: IntelligenceTier;
   identity: SecurityIdentity;
   priceData: EodPricePoint[];
   financials: FinancialMetricRecord[];
