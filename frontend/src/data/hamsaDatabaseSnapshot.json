@@ -3,7 +3,7 @@
     "exchange": "NSE",
     "sessionDate": "2026-11-09",
     "eligibleCount": 40,
-    "totalListings": 40,
+    "totalListings": 41,
     "advancers": 19,
     "decliners": 20,
     "unchanged": 1,
@@ -59962,6 +59962,2923 @@
     {
       "tier": "CANDIDATE",
       "identity": {
+        "entityId": "issuer-jnkindia",
+        "companyName": "JNK India Limited",
+        "isin": "INE0OAF01028",
+        "symbol": "JNKINDIA",
+        "exchange": "NSE",
+        "series": "EQ",
+        "businessClass": "industrial",
+        "industry": "Diversified / Core Industrial",
+        "sector": "Indian Equities",
+        "listingStatus": "active",
+        "effectiveListingDate": "2015-01-01"
+      },
+      "priceData": [],
+      "financials": [
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "borrowings",
+          "value": 547800000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "borrowings",
+          "value": 220850000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "borrowings",
+          "value": 44060000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "borrowings",
+          "value": 104300000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "borrowings",
+          "value": 740780000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "borrowings",
+          "value": 880940000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "capex",
+          "value": 116920000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "capex",
+          "value": 1570000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "capex",
+          "value": 83180000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "capex",
+          "value": 38360000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "capex",
+          "value": 93250000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "capex",
+          "value": 89130000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "cash_and_equivalents",
+          "value": 55040000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "cash_and_equivalents",
+          "value": 730670000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "cash_and_equivalents",
+          "value": 1443070000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "cash_and_equivalents",
+          "value": 162590000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "cash_and_equivalents",
+          "value": 320950000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "cash_and_equivalents",
+          "value": 69250000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "cfo",
+          "value": -100690000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "cfo",
+          "value": -634650000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "cfo",
+          "value": -653740000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "cfo",
+          "value": 103050000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "cfo",
+          "value": -21820000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "cfo",
+          "value": 27960000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "cwip",
+          "value": 34830000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "cwip",
+          "value": 45800000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "cwip",
+          "value": 57720000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "cwip",
+          "value": 80040000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "cwip",
+          "value": 83640000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "cwip",
+          "value": 20550000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2024-01-01",
+          "metric": "depreciation",
+          "value": 15710000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "depreciation",
+          "value": 56190000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-06-30",
+          "periodStart": "2024-04-01",
+          "metric": "depreciation",
+          "value": 12580000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-00831355c30ffd492342da933a151ab7"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "depreciation",
+          "value": 27450000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-07-01",
+          "metric": "depreciation",
+          "value": 14870000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-10-01",
+          "metric": "depreciation",
+          "value": 16030000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-04-01",
+          "metric": "depreciation",
+          "value": 43480000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "depreciation",
+          "value": 63230000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2025-01-01",
+          "metric": "depreciation",
+          "value": 19760000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-06-30",
+          "periodStart": "2025-04-01",
+          "metric": "depreciation",
+          "value": 15530000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-4fcc7ea6fc740d30dc0d6ebec7e1fccb"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "depreciation",
+          "value": 32420000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-07-01",
+          "metric": "depreciation",
+          "value": 16890000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-04-01",
+          "metric": "depreciation",
+          "value": 55020000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-10-01",
+          "metric": "depreciation",
+          "value": 22600000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2026-01-01",
+          "metric": "depreciation",
+          "value": 30050000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "depreciation",
+          "value": 88300000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-06-30",
+          "periodStart": "2026-04-01",
+          "metric": "depreciation",
+          "value": 28670000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-d44937abdad6cd4131e5a1a94393c75f"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-07-01",
+          "metric": "depreciation",
+          "value": 35160000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "depreciation",
+          "value": 63830000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "ebit",
+          "value": 988780000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2024-01-01",
+          "metric": "ebit",
+          "value": 309980000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-06-30",
+          "periodStart": "2024-04-01",
+          "metric": "ebit",
+          "value": 108870000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-00831355c30ffd492342da933a151ab7"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "ebit",
+          "value": 248390000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-07-01",
+          "metric": "ebit",
+          "value": 139520000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-04-01",
+          "metric": "ebit",
+          "value": 329830000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-10-01",
+          "metric": "ebit",
+          "value": 81440000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "ebit",
+          "value": 585590000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2025-01-01",
+          "metric": "ebit",
+          "value": 255740000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-06-30",
+          "periodStart": "2025-04-01",
+          "metric": "ebit",
+          "value": 56160000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-4fcc7ea6fc740d30dc0d6ebec7e1fccb"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "ebit",
+          "value": 262640000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-07-01",
+          "metric": "ebit",
+          "value": 206480000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-04-01",
+          "metric": "ebit",
+          "value": 535140000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-10-01",
+          "metric": "ebit",
+          "value": 272500000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2026-01-01",
+          "metric": "ebit",
+          "value": 493070000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "ebit",
+          "value": 1025000000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-06-30",
+          "periodStart": "2026-04-01",
+          "metric": "ebit",
+          "value": 190700000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-d44937abdad6cd4131e5a1a94393c75f"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-07-01",
+          "metric": "ebit",
+          "value": 223350000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "ebit",
+          "value": 414050000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2024-01-01",
+          "metric": "ebitda",
+          "value": 312560000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "ebitda",
+          "value": 993430000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-06-30",
+          "periodStart": "2024-04-01",
+          "metric": "ebitda",
+          "value": 93870000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-00831355c30ffd492342da933a151ab7"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-07-01",
+          "metric": "ebitda",
+          "value": 118910000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "ebitda",
+          "value": 212780000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-04-01",
+          "metric": "ebitda",
+          "value": 276250000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-10-01",
+          "metric": "ebitda",
+          "value": 63470000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "ebitda",
+          "value": 465130000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2025-01-01",
+          "metric": "ebitda",
+          "value": 185290000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-06-30",
+          "periodStart": "2025-04-01",
+          "metric": "ebitda",
+          "value": 33670000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-4fcc7ea6fc740d30dc0d6ebec7e1fccb"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-07-01",
+          "metric": "ebitda",
+          "value": 165030000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "ebitda",
+          "value": 198010000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-10-01",
+          "metric": "ebitda",
+          "value": 259200000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-04-01",
+          "metric": "ebitda",
+          "value": 457210000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "ebitda",
+          "value": 918990000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2026-01-01",
+          "metric": "ebitda",
+          "value": 461760000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-06-30",
+          "periodStart": "2026-04-01",
+          "metric": "ebitda",
+          "value": 159000000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-d44937abdad6cd4131e5a1a94393c75f"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "ebitda",
+          "value": 331820000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-07-01",
+          "metric": "ebitda",
+          "value": 172820000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "eps",
+          "value": 12.95,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2024-01-01",
+          "metric": "eps",
+          "value": 3.44,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-06-30",
+          "periodStart": "2024-04-01",
+          "metric": "eps",
+          "value": 1.33,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-00831355c30ffd492342da933a151ab7"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-07-01",
+          "metric": "eps",
+          "value": 1.42,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "eps",
+          "value": 2.59,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-10-01",
+          "metric": "eps",
+          "value": 0.52,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-04-01",
+          "metric": "eps",
+          "value": 3.08,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2025-01-01",
+          "metric": "eps",
+          "value": 2.37,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "eps",
+          "value": 5.47,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-06-30",
+          "periodStart": "2025-04-01",
+          "metric": "eps",
+          "value": 0.2,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-4fcc7ea6fc740d30dc0d6ebec7e1fccb"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "eps",
+          "value": 2.58,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-07-01",
+          "metric": "eps",
+          "value": 2.42,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-04-01",
+          "metric": "eps",
+          "value": 5.81,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-10-01",
+          "metric": "eps",
+          "value": 3.25,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2026-01-01",
+          "metric": "eps",
+          "value": 5.84,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "eps",
+          "value": 11.61,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-06-30",
+          "periodStart": "2026-04-01",
+          "metric": "eps",
+          "value": 2.05,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-d44937abdad6cd4131e5a1a94393c75f"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "eps",
+          "value": 8.82,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-07-01",
+          "metric": "eps",
+          "value": 4.72,
+          "unit": "INR_PER_SHARE",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "fcf",
+          "value": -217610000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "fcf",
+          "value": -636220000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "fcf",
+          "value": -736920000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "fcf",
+          "value": 64690000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "fcf",
+          "value": -115070000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "fcf",
+          "value": -61170000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "financing_cash_flow",
+          "value": 145060000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "financing_cash_flow",
+          "value": 2507180000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "financing_cash_flow",
+          "value": 2181050000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "financing_cash_flow",
+          "value": 4910000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "financing_cash_flow",
+          "value": 516300000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "financing_cash_flow",
+          "value": 53680000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "gross_block",
+          "value": 82820000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "gross_block",
+          "value": 95050000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "gross_block",
+          "value": 102120000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "gross_block",
+          "value": 102710000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "gross_block",
+          "value": 142160000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "gross_block",
+          "value": 417100000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2024-01-01",
+          "metric": "interest",
+          "value": 25800000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "interest",
+          "value": 99810000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-06-30",
+          "periodStart": "2024-04-01",
+          "metric": "interest",
+          "value": 36240000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-00831355c30ffd492342da933a151ab7"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-07-01",
+          "metric": "interest",
+          "value": 21230000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "interest",
+          "value": 57470000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-04-01",
+          "metric": "interest",
+          "value": 109890000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-10-01",
+          "metric": "interest",
+          "value": 52420000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "interest",
+          "value": 144970000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2025-01-01",
+          "metric": "interest",
+          "value": 35060000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-06-30",
+          "periodStart": "2025-04-01",
+          "metric": "interest",
+          "value": 36350000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-4fcc7ea6fc740d30dc0d6ebec7e1fccb"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "interest",
+          "value": 64710000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-07-01",
+          "metric": "interest",
+          "value": 28360000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-04-01",
+          "metric": "interest",
+          "value": 105330000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-10-01",
+          "metric": "interest",
+          "value": 40620000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2026-01-01",
+          "metric": "interest",
+          "value": 66580000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "interest",
+          "value": 172850000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-06-30",
+          "periodStart": "2026-04-01",
+          "metric": "interest",
+          "value": 44350000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-d44937abdad6cd4131e5a1a94393c75f"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-07-01",
+          "metric": "interest",
+          "value": 48870000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "interest",
+          "value": 93220000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "inventory",
+          "value": 831840000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "inventory",
+          "value": 835090000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "inventory",
+          "value": 428070000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "inventory",
+          "value": 196540000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "inventory",
+          "value": 249450000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "inventory",
+          "value": 332710000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "investing_cash_flow",
+          "value": -141280000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "investing_cash_flow",
+          "value": -1195500000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "investing_cash_flow",
+          "value": -138890000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "investing_cash_flow",
+          "value": -1389840000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "investing_cash_flow",
+          "value": -1618270000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "investing_cash_flow",
+          "value": -334970000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "net_worth",
+          "value": 1953620000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "net_worth",
+          "value": 4986350000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "net_worth",
+          "value": 5043720000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "net_worth",
+          "value": 5191400000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "net_worth",
+          "value": 5679910000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "net_worth",
+          "value": 5912870000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "operating_margin",
+          "value": 20.686072201249,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2024-01-01",
+          "metric": "operating_margin",
+          "value": 13.778389053463,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-06-30",
+          "periodStart": "2024-04-01",
+          "metric": "operating_margin",
+          "value": 10.667772802691,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-00831355c30ffd492342da933a151ab7"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-07-01",
+          "metric": "operating_margin",
+          "value": 11.452374073004,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "operating_margin",
+          "value": 11.092459754775,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-10-01",
+          "metric": "operating_margin",
+          "value": 6.786856146879,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-04-01",
+          "metric": "operating_margin",
+          "value": 9.681330889491,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2025-01-01",
+          "metric": "operating_margin",
+          "value": 9.703892240657,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "operating_margin",
+          "value": 9.758415592317,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-06-30",
+          "periodStart": "2025-04-01",
+          "metric": "operating_margin",
+          "value": 3.395248467247,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-4fcc7ea6fc740d30dc0d6ebec7e1fccb"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-07-01",
+          "metric": "operating_margin",
+          "value": 9.251649577585,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "operating_margin",
+          "value": 7.136061237287,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-10-01",
+          "metric": "operating_margin",
+          "value": 12.791472351765,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-04-01",
+          "metric": "operating_margin",
+          "value": 9.522966468311,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2026-01-01",
+          "metric": "operating_margin",
+          "value": 13.643777331285,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "operating_margin",
+          "value": 11.227006681302,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-06-30",
+          "periodStart": "2026-04-01",
+          "metric": "operating_margin",
+          "value": 8.835149447386,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-d44937abdad6cd4131e5a1a94393c75f"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "operating_margin",
+          "value": 9.116134420537,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-07-01",
+          "metric": "operating_margin",
+          "value": 9.39091121508,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "other_income",
+          "value": 51540000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2024-01-01",
+          "metric": "other_income",
+          "value": 13130000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-06-30",
+          "periodStart": "2024-04-01",
+          "metric": "other_income",
+          "value": 27580000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-00831355c30ffd492342da933a151ab7"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-07-01",
+          "metric": "other_income",
+          "value": 35480000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "other_income",
+          "value": 63060000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-10-01",
+          "metric": "other_income",
+          "value": 34000000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-04-01",
+          "metric": "other_income",
+          "value": 97060000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2025-01-01",
+          "metric": "other_income",
+          "value": 90210000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "other_income",
+          "value": 183690000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-06-30",
+          "periodStart": "2025-04-01",
+          "metric": "other_income",
+          "value": 38020000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-4fcc7ea6fc740d30dc0d6ebec7e1fccb"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-07-01",
+          "metric": "other_income",
+          "value": 58340000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "other_income",
+          "value": 97050000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-10-01",
+          "metric": "other_income",
+          "value": 35900000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-04-01",
+          "metric": "other_income",
+          "value": 132950000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "other_income",
+          "value": 194310000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2026-01-01",
+          "metric": "other_income",
+          "value": 61360000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-06-30",
+          "periodStart": "2026-04-01",
+          "metric": "other_income",
+          "value": 60370000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-d44937abdad6cd4131e5a1a94393c75f"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "other_income",
+          "value": 146060000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-07-01",
+          "metric": "other_income",
+          "value": 85690000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2024-01-01",
+          "metric": "pat",
+          "value": 166490000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "pat",
+          "value": 626490000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-06-30",
+          "periodStart": "2024-04-01",
+          "metric": "pat",
+          "value": 63750000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-00831355c30ffd492342da933a151ab7"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "pat",
+          "value": 141240000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-07-01",
+          "metric": "pat",
+          "value": 77490000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-10-01",
+          "metric": "pat",
+          "value": 28420000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-04-01",
+          "metric": "pat",
+          "value": 169660000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "pat",
+          "value": 302040000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2025-01-01",
+          "metric": "pat",
+          "value": 132380000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-06-30",
+          "periodStart": "2025-04-01",
+          "metric": "pat",
+          "value": 11270000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-4fcc7ea6fc740d30dc0d6ebec7e1fccb"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-07-01",
+          "metric": "pat",
+          "value": 130230000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "pat",
+          "value": 141500000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-10-01",
+          "metric": "pat",
+          "value": 180210000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-04-01",
+          "metric": "pat",
+          "value": 321710000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "pat",
+          "value": 648200000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2026-01-01",
+          "metric": "pat",
+          "value": 330400000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-06-30",
+          "periodStart": "2026-04-01",
+          "metric": "pat",
+          "value": 96250000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-d44937abdad6cd4131e5a1a94393c75f"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "pat",
+          "value": 229020000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-07-01",
+          "metric": "pat",
+          "value": 132770000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "pbt",
+          "value": 888970000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2024-01-01",
+          "metric": "pbt",
+          "value": 284180000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-06-30",
+          "periodStart": "2024-04-01",
+          "metric": "pbt",
+          "value": 72630000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-00831355c30ffd492342da933a151ab7"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "pbt",
+          "value": 190920000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-07-01",
+          "metric": "pbt",
+          "value": 118290000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-04-01",
+          "metric": "pbt",
+          "value": 219940000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-10-01",
+          "metric": "pbt",
+          "value": 29020000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2025-01-01",
+          "metric": "pbt",
+          "value": 220680000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "pbt",
+          "value": 440620000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-06-30",
+          "periodStart": "2025-04-01",
+          "metric": "pbt",
+          "value": 19810000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-4fcc7ea6fc740d30dc0d6ebec7e1fccb"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-07-01",
+          "metric": "pbt",
+          "value": 178120000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "pbt",
+          "value": 197930000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-10-01",
+          "metric": "pbt",
+          "value": 231880000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-04-01",
+          "metric": "pbt",
+          "value": 429810000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "pbt",
+          "value": 852150000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2026-01-01",
+          "metric": "pbt",
+          "value": 426490000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-06-30",
+          "periodStart": "2026-04-01",
+          "metric": "pbt",
+          "value": 146350000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-d44937abdad6cd4131e5a1a94393c75f"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "pbt",
+          "value": 320830000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-07-01",
+          "metric": "pbt",
+          "value": 174480000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "receivables",
+          "value": 2130870000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "receivables",
+          "value": 2467850000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "receivables",
+          "value": 3392640000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "receivables",
+          "value": 2641420000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "receivables",
+          "value": 3448140000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "receivables",
+          "value": 3905610000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "revenue",
+          "value": 4802410000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2024-01-01",
+          "metric": "revenue",
+          "value": 2268480000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-06-30",
+          "periodStart": "2024-04-01",
+          "metric": "revenue",
+          "value": 879940000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-00831355c30ffd492342da933a151ab7"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "revenue",
+          "value": 1918240000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-07-01",
+          "metric": "revenue",
+          "value": 1038300000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-10-01",
+          "metric": "revenue",
+          "value": 935190000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2024-12-31",
+          "periodStart": "2024-04-01",
+          "metric": "revenue",
+          "value": 2853430000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-51ab6e1a01366a29e8b8ac22c2da35ba"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2025-01-01",
+          "metric": "revenue",
+          "value": 1909440000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "revenue",
+          "value": 4766450000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-06-30",
+          "periodStart": "2025-04-01",
+          "metric": "revenue",
+          "value": 991680000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-4fcc7ea6fc740d30dc0d6ebec7e1fccb"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "revenue",
+          "value": 2774780000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-07-01",
+          "metric": "revenue",
+          "value": 1783790000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-10-01",
+          "metric": "revenue",
+          "value": 2026350000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2025-12-31",
+          "periodStart": "2025-04-01",
+          "metric": "revenue",
+          "value": 4801130000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-f55c1231ba708d9ec1893864f0f80224"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "revenue",
+          "value": 8185530000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2026-01-01",
+          "metric": "revenue",
+          "value": 3384400000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-06-30",
+          "periodStart": "2026-04-01",
+          "metric": "revenue",
+          "value": 1799630000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-d44937abdad6cd4131e5a1a94393c75f"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-07-01",
+          "metric": "revenue",
+          "value": 1840290000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "revenue",
+          "value": 3639920000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "roce",
+          "value": 39.528747671323,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "roce",
+          "value": 11.509735090747,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "roce",
+          "value": 15.964016328463,
+          "unit": "PERCENT",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "total_assets",
+          "value": 5277750000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "total_assets",
+          "value": 7863100000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "total_assets",
+          "value": 7889980000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "total_assets",
+          "value": 7720770000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "total_assets",
+          "value": 10615620000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "total_assets",
+          "value": 11452410000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        },
+        {
+          "periodEnd": "2024-03-31",
+          "periodStart": "2023-04-01",
+          "metric": "trade_payables",
+          "value": 1139000000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-22fc09a861fa10d525e006a87542c643"
+        },
+        {
+          "periodEnd": "2024-09-30",
+          "periodStart": "2024-04-01",
+          "metric": "trade_payables",
+          "value": 586250000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-23a535e370fa0f1ee968ad4fdf541a08"
+        },
+        {
+          "periodEnd": "2025-03-31",
+          "periodStart": "2024-04-01",
+          "metric": "trade_payables",
+          "value": 1114160000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-3007bcb25a46b92076ac20e88ed5b97f"
+        },
+        {
+          "periodEnd": "2025-09-30",
+          "periodStart": "2025-04-01",
+          "metric": "trade_payables",
+          "value": 1207210000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-113c921076bac2243bb04ca708d29e42"
+        },
+        {
+          "periodEnd": "2026-03-31",
+          "periodStart": "2025-04-01",
+          "metric": "trade_payables",
+          "value": 1912600000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-623138ae14af962fd446b43c9406f2e8"
+        },
+        {
+          "periodEnd": "2026-09-30",
+          "periodStart": "2026-04-01",
+          "metric": "trade_payables",
+          "value": 1555680000.0,
+          "unit": "INR",
+          "reportingScope": "consolidated",
+          "sourceDocumentId": "doc-58fd430185654369bb26b9dadc06c96e"
+        }
+      ],
+      "engineFindings": [
+        {
+          "engine": "compounders",
+          "state": "unproven",
+          "calculationExpression": "3y sales CAGR > 0.12 AND 3y PAT CAGR > 0.12 AND (ROCE > 12 percentage points OR improving) AND positive sales growth in >=3/4 latest YoY quarters",
+          "inputs": {
+            "sales_cagr_3y": null,
+            "pat_cagr_3y": null,
+            "latest_roce": "15.964016328463",
+            "roce_improving": true,
+            "positive_sales_growth_quarters": 4,
+            "sales_cagr_threshold": "0.12",
+            "pat_cagr_threshold": "0.12",
+            "roce_threshold": "12",
+            "input_quality_states": "{\"pat\": {\"observed\": 19}, \"revenue\": {\"observed\": 19}, \"roce\": {\"observed\": 3}}"
+          },
+          "explanation": "Insufficient periods or missing/invalid metrics remain unproven; all input periods must already be point-in-time eligible.",
+          "sourceObservationIds": [
+            "fin-45226006ddaf40d287e1dca7781b194e",
+            "fin-9ad6c1f08f3ee35df151aafa29d41966",
+            "fin-a012d7854e0271de6558bffe04a3856c",
+            "fin-354017e39b0d6bcd582fe74e6e387885",
+            "fin-e8b5d361b976005603ecbcfd8f45efaf",
+            "fin-91ab935a372da105125416d09df36e21",
+            "fin-d14f82319f2676d777a7184e64df6869",
+            "fin-56495c1f8bbb807b7d1306ce718c59af",
+            "fin-d443d4eab5432e7278f7451b02046863",
+            "fin-cf490eef38881c829e2bd4e3e945234a",
+            "fin-942228471b52ab1847cc98648fa121a4",
+            "fin-b07e0ef85fa6e1ba8a3271de2898896c",
+            "fin-1ddf919e3e34612f5e191fb08519ac52",
+            "fin-4b2bb9c8ce024798a61507975d03769d",
+            "fin-8971312cd96e2b4b6df0a2fa872b201d",
+            "fin-8eb481a7d4d1c29f81872eeedbc4b9b5",
+            "fin-c651be6ec2159a04fbd8c41335df15fb",
+            "fin-9c946fa5a226180d59ef8b74e5921918",
+            "fin-f12586ce7675afa7a8a802b70c46f0d3",
+            "fin-21e5d40d4ebf1826b781bf90ca2bd423",
+            "fin-751edd05b3ef3332a5736ca371a03545",
+            "fin-ed1e92a8793ef0638b506f0a265e25b7",
+            "fin-c622f86ddfd1cb1397eaa45e89685cb1",
+            "fin-f7f64438a883d579b61ecd290c3eb693",
+            "fin-c0ca074866c17394d925407953f9ee46",
+            "fin-cc42f9113086e775729dc3dc7391a1a9",
+            "fin-8a74ef54d268fdfd8cf094e2d6251aaf",
+            "fin-b9662e70e0135f19a206d0089ae3dc0b",
+            "fin-d1390ad949650ea49d0287f8940a3f40",
+            "fin-2782d0716c494527e5bdab24efb85a66",
+            "fin-477d72328e5eb80fbabfa0239d635e72",
+            "fin-140fcbc46cacb2a90003e9e62dcf989a",
+            "fin-46a1ab08a7089de5c7035294ab07cc53",
+            "fin-5e7cbc1f44614ae07bd92cad75306e59",
+            "fin-ec0f67834ec5caf33298517a91b1d5e0",
+            "fin-86ebea355fe200c88c71c0fa365f10b4",
+            "fin-1129df28a1705107fbecc6845776b39b",
+            "fin-6aeab9ee39a5778d0249dfc11102ce03",
+            "fin-18135da221da0d4b0dedf4b2997b758e",
+            "fin-5315fbbc33a6904ca5d8edad3b951d56",
+            "fin-9d7d8c15d84ff245fd3aaf5eeaf4a88a"
+          ],
+          "sourceDocumentIds": [
+            "doc-22fc09a861fa10d525e006a87542c643",
+            "doc-00831355c30ffd492342da933a151ab7",
+            "doc-23a535e370fa0f1ee968ad4fdf541a08",
+            "doc-51ab6e1a01366a29e8b8ac22c2da35ba",
+            "doc-3007bcb25a46b92076ac20e88ed5b97f",
+            "doc-4fcc7ea6fc740d30dc0d6ebec7e1fccb",
+            "doc-113c921076bac2243bb04ca708d29e42",
+            "doc-f55c1231ba708d9ec1893864f0f80224",
+            "doc-623138ae14af962fd446b43c9406f2e8",
+            "doc-d44937abdad6cd4131e5a1a94393c75f",
+            "doc-58fd430185654369bb26b9dadc06c96e"
+          ]
+        },
+        {
+          "engine": "earnings_inflection",
+          "state": "not_triggered",
+          "calculationExpression": "YoY quarterly sales growth > 0.20 AND (PAT growth > 0.25 OR loss-to-profit) AND same-quarter YoY operating margin improvement",
+          "inputs": {
+            "sales_growth_yoy": "0.03167413204469135940889902959",
+            "pat_growth_yoy": "0.01950395454196421715426553022",
+            "loss_to_profit": false,
+            "operating_margin_improving": true,
+            "one_offs_and_base_effects_review_required": true,
+            "sales_growth_threshold": "0.20",
+            "pat_growth_threshold": "0.25",
+            "input_quality_states": "{\"operating_margin\": {\"observed\": 19}, \"pat\": {\"observed\": 19}, \"revenue\": {\"observed\": 19}}"
+          },
+          "explanation": "One-offs and base effects require explicit review; no adjustment is inferred by the engine.",
+          "sourceObservationIds": [
+            "fin-2df58c026483e1913293a1044baf2633",
+            "fin-aff5a08c787996896ae27a5add5fe892",
+            "fin-fff592112d50c450c43c4134bf875a70",
+            "fin-3fcd2009e363d2b7b79440f5191c87b5",
+            "fin-cbe7dabce0372d3144432e5d6351cc97",
+            "fin-035817de77ed4d39a430dd273b80f68c",
+            "fin-f42d4ce0cbb810ef24737e17668f7c43",
+            "fin-7db91d5745dba7a947c350bee659ef41",
+            "fin-8c4234fd3a8d40b039efbad166bd756c",
+            "fin-ed241b21b5fa8fea923c848acfebf2ae",
+            "fin-16d8120f877067a7f1f1808c406c4909",
+            "fin-72c6ed11f58cb0878d2f87b03b8dc23a",
+            "fin-ec5a9e679d6c7df7c9d23201a2de05a0",
+            "fin-f710ebcde8351226386d2fe70dcf6ffe",
+            "fin-c5d09bd47488760350597f237a6fcd94",
+            "fin-e0e0e53a4ab415f8c5a1aee14fdb4f99",
+            "fin-156570d8f70fb483d5f6edc8a5f141c7",
+            "fin-1b2760c57ddfd3e701c6803bc35cffe8",
+            "fin-2ce0d8430ebc5dd53b8533c0478b73a5",
+            "fin-45226006ddaf40d287e1dca7781b194e",
+            "fin-9ad6c1f08f3ee35df151aafa29d41966",
+            "fin-a012d7854e0271de6558bffe04a3856c",
+            "fin-354017e39b0d6bcd582fe74e6e387885",
+            "fin-e8b5d361b976005603ecbcfd8f45efaf",
+            "fin-91ab935a372da105125416d09df36e21",
+            "fin-d14f82319f2676d777a7184e64df6869",
+            "fin-56495c1f8bbb807b7d1306ce718c59af",
+            "fin-d443d4eab5432e7278f7451b02046863",
+            "fin-cf490eef38881c829e2bd4e3e945234a",
+            "fin-942228471b52ab1847cc98648fa121a4",
+            "fin-b07e0ef85fa6e1ba8a3271de2898896c",
+            "fin-1ddf919e3e34612f5e191fb08519ac52",
+            "fin-4b2bb9c8ce024798a61507975d03769d",
+            "fin-8971312cd96e2b4b6df0a2fa872b201d",
+            "fin-8eb481a7d4d1c29f81872eeedbc4b9b5",
+            "fin-c651be6ec2159a04fbd8c41335df15fb",
+            "fin-9c946fa5a226180d59ef8b74e5921918",
+            "fin-f12586ce7675afa7a8a802b70c46f0d3",
+            "fin-21e5d40d4ebf1826b781bf90ca2bd423",
+            "fin-751edd05b3ef3332a5736ca371a03545",
+            "fin-ed1e92a8793ef0638b506f0a265e25b7",
+            "fin-c622f86ddfd1cb1397eaa45e89685cb1",
+            "fin-f7f64438a883d579b61ecd290c3eb693",
+            "fin-c0ca074866c17394d925407953f9ee46",
+            "fin-cc42f9113086e775729dc3dc7391a1a9",
+            "fin-8a74ef54d268fdfd8cf094e2d6251aaf",
+            "fin-b9662e70e0135f19a206d0089ae3dc0b",
+            "fin-d1390ad949650ea49d0287f8940a3f40",
+            "fin-2782d0716c494527e5bdab24efb85a66",
+            "fin-477d72328e5eb80fbabfa0239d635e72",
+            "fin-140fcbc46cacb2a90003e9e62dcf989a",
+            "fin-46a1ab08a7089de5c7035294ab07cc53",
+            "fin-5e7cbc1f44614ae07bd92cad75306e59",
+            "fin-ec0f67834ec5caf33298517a91b1d5e0",
+            "fin-86ebea355fe200c88c71c0fa365f10b4",
+            "fin-1129df28a1705107fbecc6845776b39b",
+            "fin-6aeab9ee39a5778d0249dfc11102ce03"
+          ],
+          "sourceDocumentIds": [
+            "doc-22fc09a861fa10d525e006a87542c643",
+            "doc-00831355c30ffd492342da933a151ab7",
+            "doc-23a535e370fa0f1ee968ad4fdf541a08",
+            "doc-51ab6e1a01366a29e8b8ac22c2da35ba",
+            "doc-3007bcb25a46b92076ac20e88ed5b97f",
+            "doc-4fcc7ea6fc740d30dc0d6ebec7e1fccb",
+            "doc-113c921076bac2243bb04ca708d29e42",
+            "doc-f55c1231ba708d9ec1893864f0f80224",
+            "doc-623138ae14af962fd446b43c9406f2e8",
+            "doc-d44937abdad6cd4131e5a1a94393c75f",
+            "doc-58fd430185654369bb26b9dadc06c96e"
+          ]
+        },
+        {
+          "engine": "capex_conversion",
+          "state": "unproven",
+          "calculationExpression": "rising capex/CWIP/gross block AND source-backed commissioning/trial/qualification AND demand/customer evidence",
+          "inputs": {
+            "investment_metric_trends": "{\"capex\": true, \"cwip\": true, \"gross_block\": true}",
+            "investment_trend_rising": true,
+            "missing_evidence_gates": [
+              "commissioning",
+              "demand",
+              "customer_evidence"
+            ],
+            "negative_fcf_or_low_roce_is_automatic_rejection": false,
+            "input_quality_states": "{\"capex\": {\"observed\": 6}, \"cwip\": {\"observed\": 6}, \"gross_block\": {\"observed\": 6}}"
+          },
+          "explanation": "The engine does not reject capex-heavy businesses because of current ROCE or FCF. Narrative evidence gates need cited human review.",
+          "sourceObservationIds": [
+            "fin-e8bf8b90cd5d940a160a9d7860a39eee",
+            "fin-c849df1642fdc578d449be2d22c2be2b",
+            "fin-dc3284ad218dc3045a441802dd28b0bb",
+            "fin-bf32fa88ea25686c4509faa311e4fed6",
+            "fin-cf8eda6d8cfbe7199e7326ca58a61c25",
+            "fin-e01a2de9224142207d6a167143c9a9de",
+            "fin-5414128402ade197fc8887418704d02f",
+            "fin-aa840dbaf127984fed0187b44bb38c13",
+            "fin-f03f4c289c8ea95c78a91cf086f0da75",
+            "fin-ad26712a237a79ad2c83658e8a85763e",
+            "fin-667912858cdbde9958f5a99e971bd481",
+            "fin-63f046867a8ab9feba6909f432a89d5a",
+            "fin-936ed85ec07f941e54d8db8fd3af6f19",
+            "fin-9722223cb3f7bf189ebb2f55b6e18eb0",
+            "fin-9a168ed8036a8a2314d4abf356f7c520",
+            "fin-7eb04e00bed98a5419fe379ae0bd5827",
+            "fin-a46113885a979f938fed8772fd6d6a8f",
+            "fin-3be58cdc43b5eb7887e2629cb1742adc"
+          ],
+          "sourceDocumentIds": [
+            "doc-22fc09a861fa10d525e006a87542c643",
+            "doc-23a535e370fa0f1ee968ad4fdf541a08",
+            "doc-3007bcb25a46b92076ac20e88ed5b97f",
+            "doc-113c921076bac2243bb04ca708d29e42",
+            "doc-623138ae14af962fd446b43c9406f2e8",
+            "doc-58fd430185654369bb26b9dadc06c96e"
+          ]
+        },
+        {
+          "engine": "cash_quality",
+          "state": "not_triggered",
+          "calculationExpression": "3y cumulative CFO/PAT >= 0.8 AND (positive FCF in >=2/3 years OR documented expansion explains negative FCF)",
+          "inputs": {
+            "cfo_pat_ratio_3y": "-0.4923163762977808502406880062",
+            "positive_fcf_years_of_three": 0,
+            "documented_expansion": false,
+            "receivables_and_inventory_review_required": true,
+            "cfo_pat_threshold": "0.8",
+            "input_quality_states": "{\"cfo\": {\"observed\": 6}, \"fcf\": {\"observed\": 6}, \"pat\": {\"observed\": 19}}"
+          },
+          "explanation": "PAT/CFO divergence, receivables, inventory, and any expansion explanation remain visible research checks.",
+          "sourceObservationIds": [
+            "fin-868afbd7dfb5e591821327db45e6c4b0",
+            "fin-c2198315a28001f56834875536ccb1cf",
+            "fin-98a81c1e09125871a87bf7cf223c4d17",
+            "fin-26225ec3113ee14c12039baaf0254300",
+            "fin-51e86e4d2bd93780499790c26fcd86b7",
+            "fin-65f2aa1f8de96c4c622c003848f89390",
+            "fin-3b9cba0964b4918ebeb4193769dc5afa",
+            "fin-c07709559efa4c12f1a8c5742ee2bad1",
+            "fin-e044922220ab5264d2c64acc639f78a5",
+            "fin-cbe663b9fa90ead23a85483933d8260d",
+            "fin-b69bacb1e09bf393857fa2ff8b7337d1",
+            "fin-2dbab5051237dc59da360ef1081160b6",
+            "fin-45226006ddaf40d287e1dca7781b194e",
+            "fin-9ad6c1f08f3ee35df151aafa29d41966",
+            "fin-a012d7854e0271de6558bffe04a3856c",
+            "fin-354017e39b0d6bcd582fe74e6e387885",
+            "fin-e8b5d361b976005603ecbcfd8f45efaf",
+            "fin-91ab935a372da105125416d09df36e21",
+            "fin-d14f82319f2676d777a7184e64df6869",
+            "fin-56495c1f8bbb807b7d1306ce718c59af",
+            "fin-d443d4eab5432e7278f7451b02046863",
+            "fin-cf490eef38881c829e2bd4e3e945234a",
+            "fin-942228471b52ab1847cc98648fa121a4",
+            "fin-b07e0ef85fa6e1ba8a3271de2898896c",
+            "fin-1ddf919e3e34612f5e191fb08519ac52",
+            "fin-4b2bb9c8ce024798a61507975d03769d",
+            "fin-8971312cd96e2b4b6df0a2fa872b201d",
+            "fin-8eb481a7d4d1c29f81872eeedbc4b9b5",
+            "fin-c651be6ec2159a04fbd8c41335df15fb",
+            "fin-9c946fa5a226180d59ef8b74e5921918",
+            "fin-f12586ce7675afa7a8a802b70c46f0d3"
+          ],
+          "sourceDocumentIds": [
+            "doc-22fc09a861fa10d525e006a87542c643",
+            "doc-23a535e370fa0f1ee968ad4fdf541a08",
+            "doc-3007bcb25a46b92076ac20e88ed5b97f",
+            "doc-113c921076bac2243bb04ca708d29e42",
+            "doc-623138ae14af962fd446b43c9406f2e8",
+            "doc-58fd430185654369bb26b9dadc06c96e",
+            "doc-00831355c30ffd492342da933a151ab7",
+            "doc-51ab6e1a01366a29e8b8ac22c2da35ba",
+            "doc-4fcc7ea6fc740d30dc0d6ebec7e1fccb",
+            "doc-f55c1231ba708d9ec1893864f0f80224",
+            "doc-d44937abdad6cd4131e5a1a94393c75f"
+          ]
+        },
+        {
+          "engine": "extreme_sell_side_liquidity",
+          "state": "unproven",
+          "calculationExpression": "volume multiple >= explicitly configured threshold OR venue-specific delivery percentage-point change >= explicitly configured threshold; AND separately evidenced forced/structural selling AND absorption capacity",
+          "inputs": {
+            "volume_multiple": null,
+            "volume_threshold": "0.5",
+            "delivery_percentage_point_change": null,
+            "delivery_threshold_percentage_points": "1.0",
+            "unusual_volume": null,
+            "elevated_delivery": null,
+            "forced_selling_evidence": null,
+            "absorption_capacity_evidence": null,
+            "forced_selling_source_document_ids": "[]",
+            "absorption_capacity_source_document_ids": "[]",
+            "volume_source_observation_ids": "[]",
+            "delivery_source_observation_ids": "[]",
+            "falling_price_alone_sufficient": false
+          },
+          "explanation": "Block/bulk, ownership, lock-in, pledge and absorption evidence must be separately sourced; delivery remains venue-specific.",
+          "sourceObservationIds": [],
+          "sourceDocumentIds": []
+        }
+      ],
+      "researchNotes": [],
+      "watchlistStatus": "unassigned",
+      "hamsa11": [
+        {
+          "key": "gap",
+          "label": "Gap Analysis",
+          "status": "passed",
+          "category": "quantitative",
+          "evidenceCitations": [
+            "Ind-AS XBRL"
+          ],
+          "findings": "Strong operational variance vs industry average."
+        },
+        {
+          "key": "choke_point",
+          "label": "Choke Point Moat",
+          "status": "passed",
+          "category": "qualitative_verified",
+          "evidenceCitations": [
+            "Filing Annual Report"
+          ],
+          "findings": "High barrier to entry & dominant channel distribution."
+        },
+        {
+          "key": "turbo",
+          "label": "Turbo Driver",
+          "status": "unproven",
+          "category": "quantitative",
+          "evidenceCitations": [
+            "Q2 Financials"
+          ],
+          "findings": "Accelerating volume demand and product mix enrichment."
+        },
+        {
+          "key": "real_buyers",
+          "label": "Real Institutional Buyers",
+          "status": "passed",
+          "category": "qualitative_verified",
+          "evidenceCitations": [
+            "Shareholding Pattern"
+          ],
+          "findings": "Institutional and mutual fund ownership expanded over 4 quarters."
+        },
+        {
+          "key": "stack",
+          "label": "Stack Leverage",
+          "status": "passed",
+          "category": "quantitative",
+          "evidenceCitations": [
+            "XBRL BS"
+          ],
+          "findings": "Clean balance sheet with low debt-to-equity ratio."
+        },
+        {
+          "key": "trigger",
+          "label": "Operational Trigger",
+          "status": "unproven",
+          "category": "hypothesis",
+          "evidenceCitations": [
+            "Capacity Utilization"
+          ],
+          "findings": "New production line commissioned and operational."
+        },
+        {
+          "key": "jockey",
+          "label": "Jockey / Management Track Record",
+          "status": "passed",
+          "category": "qualitative_verified",
+          "evidenceCitations": [
+            "Governance Audit"
+          ],
+          "findings": "High capital allocation efficiency and prudent promoter pedigree."
+        },
+        {
+          "key": "thin_float",
+          "label": "Float Scarcity",
+          "status": "neutral",
+          "category": "quantitative",
+          "evidenceCitations": [
+            "NSE Float Data"
+          ],
+          "findings": "Mainboard institutional liquidity profile."
+        },
+        {
+          "key": "ceiling",
+          "label": "Runway / Market Ceiling",
+          "status": "passed",
+          "category": "hypothesis",
+          "evidenceCitations": [
+            "Industry Addressable Market"
+          ],
+          "findings": "Domestic market headroom exceeds 5x current revenue."
+        },
+        {
+          "key": "what_kills_it",
+          "label": "Critical Risk Factor",
+          "status": "neutral",
+          "category": "unknown",
+          "evidenceCitations": [
+            "Risk Disclosure"
+          ],
+          "findings": "Raw material commodity inflation & regulatory tariff updates."
+        },
+        {
+          "key": "extreme_liquidity",
+          "label": "Extreme Sell-Side Absorption",
+          "status": "unproven",
+          "category": "quantitative",
+          "evidenceCitations": [
+            "Settlement Log"
+          ],
+          "findings": "Strong absorption on high-turnover sessions."
+        }
+      ]
+    },
+    {
+      "tier": "CANDIDATE",
+      "identity": {
         "entityId": "issuer-jublfood",
         "companyName": "Jubilant Foodworks Limited",
         "isin": "INE797F01020",
@@ -88026,6 +90943,41 @@
         }
       ],
       "researchNotes": [
+        {
+          "id": "note-5549a3430c894b6881cd2a0b3be463c6",
+          "date": "2026-11-25",
+          "author": "hamsa-operator",
+          "thesis": "Unit test research thesis",
+          "evidenceLocator": "unit-test"
+        },
+        {
+          "id": "note-2fdba4b512f3428da63182f90728ff41",
+          "date": "2026-11-25",
+          "author": "hamsa-operator",
+          "thesis": "Unit test research thesis",
+          "evidenceLocator": "unit-test"
+        },
+        {
+          "id": "note-b2f13510e68343d29cb6b91307271c42",
+          "date": "2026-11-25",
+          "author": "hamsa-operator",
+          "thesis": "Unit test research thesis",
+          "evidenceLocator": "unit-test"
+        },
+        {
+          "id": "note-4f464fb6aba54d249fb095758e217b50",
+          "date": "2026-11-25",
+          "author": "hamsa-operator",
+          "thesis": "Unit test research thesis",
+          "evidenceLocator": "unit-test"
+        },
+        {
+          "id": "note-66bcba90e8c8478288d6c9d3bf62f218",
+          "date": "2026-11-25",
+          "author": "hamsa-operator",
+          "thesis": "Unit test research thesis",
+          "evidenceLocator": "unit-test"
+        },
         {
           "id": "note-7dbeba41a46b41788fcd60805f31bae5",
           "date": "2026-11-25",
@@ -135646,18 +138598,18 @@
     "databaseVersion": "DuckDB 2.0.0",
     "schemaVersion": 7,
     "duckdbSizeBytes": 95956992,
-    "sqliteSizeBytes": 135168,
-    "totalFinancialObservations": 13864,
+    "sqliteSizeBytes": 143360,
+    "totalFinancialObservations": 14418,
     "totalEodPrices": 14924,
     "totalDeliveryRecords": 8431,
     "activeSessions": 670,
-    "admittedIssuers": 40,
+    "admittedIssuers": 41,
     "pitCutoffHour": "15:30 Asia/Kolkata",
     "dataFreshnessDate": "2026-11-09"
   },
   "tiers": {
     "RADAR": 0,
-    "CANDIDATE": 36,
+    "CANDIDATE": 37,
     "INVESTIGATION": 4,
     "WATCH": 0,
     "ARCHIVED": 0

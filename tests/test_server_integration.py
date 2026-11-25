@@ -46,7 +46,7 @@ class HamsaServerIntegrationTests(unittest.TestCase):
         data = self._get("/health")
         self.assertEqual(data["status"], "healthy")
         self.assertEqual(data["schemaVersion"], 7)
-        self.assertEqual(data["admittedIssuers"], 40)
+        self.assertEqual(data["admittedIssuers"], 41)
 
     def test_market_radar_endpoint(self):
         radar = self._get("/api/radar")
@@ -56,7 +56,7 @@ class HamsaServerIntegrationTests(unittest.TestCase):
 
     def test_companies_and_single_company_endpoints(self):
         comps = self._get("/api/companies")
-        self.assertEqual(len(comps), 40)
+        self.assertEqual(len(comps), 41)
         poly = self._get("/api/companies/POLYCAB")
         self.assertEqual(poly["identity"]["symbol"], "POLYCAB")
         self.assertGreater(len(poly["financials"]), 0)
