@@ -27,12 +27,22 @@ from hamsa.screening.engines import (
     evaluate_extreme_sell_side_liquidity,
 )
 from hamsa.storage.duckdb_repository import DuckDBRepository
+from hamsa.ui.dossier_views import render_company_dossier, render_hamsa_11
+from hamsa.ui.radar_views import ENGINE_NAMES, render_market_radar, render_opportunity_radar
+from hamsa.ui.theme import inject_terminal_theme, render_topbar
+from hamsa.ui.workflow_views import render_data_health, render_discovery_feed, render_watchlist
 
 
-DB_PATH = Path(os.environ.get("HAMSA_DUCKDB_PATH", str(ROOT / "data" / "processed" / "hamsa.duckdb")))
-REVIEW_PATH = Path(os.environ.get("HAMSA_REVIEW_DB_PATH", str(ROOT / "data" / "processed" / "hamsa_reviews.sqlite3")))
+def _resolve_db_paths() -> tuple[Path, Path]:
+    default_duck = ROOT / "hamsa_terminal.duckdb" if (ROOT / "hamsa_terminal.duckdb").is_file() else ROOT / "data" / "processed" / "hamsa.duckdb"
+    default_rev = ROOT / "hamsa_terminal_reviews.sqlite3" if (ROOT / "hamsa_terminal_reviews.sqlite3").is_file() else ROOT / "data" / "processed" / "hamsa_reviews.sqlite3"
+    duck_path = Path(os.environ.get("HAMSA_DUCKDB_PATH", str(default_duck)))
+    rev_path = Path(os.environ.get("HAMSA_REVIEW_DB_PATH", str(default_rev)))
+    return duck_path, rev_path
+
+
+DB_PATH, REVIEW_PATH = _resolve_db_paths()
 SQLITE_SCHEMA = ROOT / "sql" / "sqlite_schema.sql"
-ENGINE_NAMES = ("compounders", "earnings_inflection", "capex_conversion", "cash_quality", "extreme_sell_side_liquidity")
 
 
 def _screening_config() -> dict[str, object]:
@@ -60,12 +70,62 @@ def _screening_defaults() -> dict[str, float | None]:
 
 
 def _open_repositories():
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    return DuckDBRepository(DB_PATH)
+    duck_path, _ = _resolve_db_paths()
+    duck_path.parent.mkdir(parents=True, exist_ok=True)
+    return DuckDBRepository(duck_path)
 
 
 def _freshness_text(value):
     return value.isoformat() if value else "No EOD observations"
+
+
+def _sidebar_session_controls(repository):
+    st.sidebar.markdown("### Session & PIT Context")
+    exchange = st.sidebar.selectbox("Exchange Venue", ("NSE", "BSE"), key="global_exchange")
+    versions = calendar_versions(repository, exchange)
+    if not versions:
+        st.sidebar.warning(f"No imported {exchange} calendar version exists. Point-in-time screens are disabled for this venue.")
+        return None
+    version = st.sidebar.selectbox("Calendar Version", versions, index=len(versions) - 1, key="global_calendar")
+    sessions = calendar_sessions(repository, exchange, version)
+    if not sessions:
+        st.sidebar.warning("The selected calendar version contains no trading sessions.")
+        return None
+    preferred_date = date(2026, 11, 9)
+    default_idx = sessions.index(preferred_date) if preferred_date in sessions else len(sessions) - 1
+    selected = st.sidebar.selectbox(
+        "EOD Session",
+        sessions,
+        index=default_idx,
+        format_func=lambda d: d.isoformat(),
+        key="global_session_date",
+    )
+    mode = st.sidebar.selectbox("Historical Availability Mode", ("public_as_of", "hamsa_known_as_of"), key="global_mode")
+    return exchange, version, selected, mode
+
+
+def _sidebar_threshold_controls() -> EngineThresholds:
+    defaults = _screening_defaults()
+    with st.sidebar.expander("Engine Threshold Configuration", expanded=False):
+        sales = Decimal(str(st.number_input("3Y Sales CAGR min", min_value=0.0, max_value=5.0, value=defaults["sales_cagr_min"], step=0.01, format="%.2f")))
+        pat = Decimal(str(st.number_input("3Y PAT CAGR min", min_value=0.0, max_value=5.0, value=defaults["pat_cagr_min"], step=0.01, format="%.2f")))
+        roce = Decimal(str(st.number_input("ROCE min (% pts)", min_value=0.0, max_value=100.0, value=defaults["roce_min"], step=0.5, format="%.1f")))
+        sales_yoy = Decimal(str(st.number_input("Qtr Sales YoY min", min_value=0.0, max_value=5.0, value=defaults["earnings_sales_growth_min"], step=0.01, format="%.2f")))
+        pat_yoy = Decimal(str(st.number_input("Qtr PAT YoY min", min_value=0.0, max_value=5.0, value=defaults["earnings_pat_growth_min"], step=0.01, format="%.2f")))
+        cfo_pat = Decimal(str(st.number_input("3Y CFO/PAT min", min_value=0.0, max_value=10.0, value=defaults["cash_cfo_pat_min"], step=0.05, format="%.2f")))
+        vol_default = "" if defaults["unusual_volume_multiple"] is None else str(defaults["unusual_volume_multiple"])
+        deliv_default = "" if defaults["unusual_delivery_percentage_points"] is None else str(defaults["unusual_delivery_percentage_points"])
+        volume_raw = st.text_input("Unusual volume multiple (optional)", value=vol_default)
+        delivery_raw = st.text_input("Delivery Δ % pts (optional)", value=deliv_default)
+        try:
+            volume = Decimal(volume_raw) if volume_raw.strip() else None
+            delivery = Decimal(delivery_raw) if delivery_raw.strip() else None
+            if any(item is not None and (not item.is_finite() or item < 0) for item in (volume, delivery)):
+                raise ValueError("liquidity thresholds must be finite and non-negative")
+        except Exception as exc:
+            st.error(f"Invalid liquidity threshold: {exc}")
+            st.stop()
+    return EngineThresholds(sales, pat, roce, sales_yoy, pat_yoy, cfo_pat, volume, delivery)
 
 
 def _calendar_controls(repository, key: str):
@@ -882,29 +942,87 @@ def _render_security_admission_workflow(repository):
 
 
 def main() -> None:
-    st.set_page_config(page_title="HAMSA · Investment Research", layout="wide")
-    st.title("HAMSA")
-    st.caption("Local end-of-day investment research · no automated buy/sell recommendations")
+    st.set_page_config(page_title="HAMSA · Equity Intelligence Terminal", layout="wide")
+    inject_terminal_theme()
+    duck_path, rev_path = _resolve_db_paths()
     try:
         repository = _open_repositories()
     except Exception as exc:
-        st.error(f"Could not open the local DuckDB database at {DB_PATH}: {exc}")
+        st.error(f"Could not open the local DuckDB database at {duck_path}: {exc}")
         st.stop()
     try:
-        reviews = DossierReviewRepository(REVIEW_PATH, schema_path=SQLITE_SCHEMA, analytics_repository=repository)
-        page = st.sidebar.radio("Workspace", ("Market Radar", "Discovery Engines", "Company Dossier", "Event & Liquidity", "Watchlist", "Data Operations"))
-        if page == "Market Radar":
-            _render_radar(repository)
-        elif page == "Discovery Engines":
-            _render_discovery(repository, reviews)
-        elif page == "Company Dossier":
-            _render_dossier(repository, reviews)
-        elif page == "Event & Liquidity":
-            _render_events(repository)
-        elif page == "Watchlist":
-            _render_watchlist(repository, reviews)
+        reviews = DossierReviewRepository(rev_path, schema_path=SQLITE_SCHEMA, analytics_repository=repository)
+        st.sidebar.markdown("## HAMSA TERMINAL")
+        st.sidebar.caption("Local EOD Indian Equity Intelligence · Inevitable Business + Asymmetric Setup")
+        page = st.sidebar.radio(
+            "Workspace",
+            (
+                "Market Radar",
+                "Opportunity Radar",
+                "Company Dossier",
+                "HAMSA 11",
+                "Discovery Feed",
+                "Watchlist & Investigation",
+                "Data & System Health",
+            ),
+        )
+        issuer_labels = {row[0]: f"{row[1]} ({row[0]})" for row in _issuer_rows(repository)}
+        if issuer_labels:
+            all_ids = list(issuer_labels.keys())
+            if st.session_state.get("focus_issuer_id") not in issuer_labels:
+                st.session_state["focus_issuer_id"] = "issuer-rategain" if "issuer-rategain" in issuer_labels else all_ids[0]
+            focus_id = st.sidebar.selectbox(
+                "Focus Company",
+                all_ids,
+                index=all_ids.index(st.session_state["focus_issuer_id"]),
+                format_func=lambda k: issuer_labels[k],
+            )
+            st.session_state["focus_issuer_id"] = focus_id
+            focus_label = issuer_labels[focus_id]
         else:
-            _render_data_operations(repository)
+            focus_label = "No Issuers Admitted"
+
+        session_ctx = _sidebar_session_controls(repository)
+        thresholds = _sidebar_threshold_controls()
+        metric_codes = _screening_config().get("metric_codes", {})
+        schema_v = repository._connection.execute(
+            "SELECT current_version FROM schema_metadata WHERE schema_name='hamsa_analytics'"
+        ).fetchone()[0]
+
+        if session_ctx is not None:
+            ex_v, cal_v, sess_d, avail_m = session_ctx
+            render_topbar(
+                exchange=ex_v,
+                calendar_version=cal_v,
+                session_date_str=sess_d.isoformat(),
+                availability_mode=avail_m,
+                schema_version=schema_v,
+                focus_company_label=focus_label,
+            )
+        else:
+            render_topbar(
+                exchange="NSE",
+                calendar_version=None,
+                session_date_str="UNSET",
+                availability_mode="public_as_of",
+                schema_version=schema_v,
+                focus_company_label=focus_label,
+            )
+
+        if page == "Market Radar":
+            render_market_radar(repository, reviews, session_ctx, thresholds, issuer_labels)
+        elif page == "Opportunity Radar":
+            render_opportunity_radar(repository, reviews, session_ctx, thresholds, metric_codes, issuer_labels)
+        elif page == "Company Dossier":
+            render_company_dossier(repository, reviews, session_ctx, thresholds, metric_codes, issuer_labels)
+        elif page == "HAMSA 11":
+            render_hamsa_11(repository, reviews, session_ctx, issuer_labels)
+        elif page == "Discovery Feed":
+            render_discovery_feed(repository, reviews, session_ctx, thresholds, issuer_labels)
+        elif page == "Watchlist & Investigation":
+            render_watchlist(repository, reviews, issuer_labels)
+        else:
+            render_data_health(repository, reviews, session_ctx, _render_security_admission_workflow)
     finally:
         try:
             reviews.close()

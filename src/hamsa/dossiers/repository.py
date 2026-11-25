@@ -199,11 +199,17 @@ class DossierReviewRepository:
         return self._latest_leaf(self.connection, "company_research_note_revision", "note_revision_id",
                                  "supersedes_note_revision_id", entity_id)
 
+    def latest_company_research_note(self, entity_id: str) -> sqlite3.Row | None:
+        return self.latest_company_note(entity_id)
+
     def research_note_evidence(self, note_revision_id: str) -> list[sqlite3.Row]:
         return self.connection.execute(
             "SELECT * FROM company_research_note_evidence WHERE note_revision_id=? ORDER BY source_document_id,locator",
             (note_revision_id,),
         ).fetchall()
+
+    def company_research_note_evidence(self, note_revision_id: str) -> list[sqlite3.Row]:
+        return self.research_note_evidence(note_revision_id)
 
     def append_business_classification_review(self, *, entity_id: str, business_class: str,
             valid_from: str, valid_to: str | None, reviewer: str, rationale: str,
