@@ -40,9 +40,17 @@ class ShadowProfile:
 
 # Versioned Experimental Candidate Profiles for Calibration
 SHADOW_PROFILES: Mapping[str, ShadowProfile] = {
+    "shadow-v1.0-broad": ShadowProfile(
+        version="shadow-v1.0-broad",
+        name="Broad Behavioral Anomaly (Vol >= 2.0x OR Deliv >= +8pp)",
+        volume_multiple_min=Decimal("2.0"),
+        delivery_chg_pp_min=Decimal("8.0"),
+        avg_turnover_20d_min_inr=Decimal("10000000.0"),  # 1 Cr/day floor
+        min_concurrent_flags=1,
+    ),
     "shadow-v1.0": ShadowProfile(
         version="shadow-v1.0",
-        name="Institutional Dual Surge (Calibrated Baseline)",
+        name="Institutional Dual Convergence (Strict Dual Trigger)",
         volume_multiple_min=Decimal("2.0"),
         delivery_chg_pp_min=Decimal("8.0"),
         avg_turnover_20d_min_inr=Decimal("10000000.0"),  # 1 Cr/day floor
@@ -128,12 +136,10 @@ class ShadowCandidateEngine:
             ) = sig
 
             # Evaluate against shadow profile criteria
-            flags_count = 0
+            triggers = []
+            meets_liquidity_floor = bool(avg_to is not None and avg_to >= profile.avg_turnover_20d_min_inr)
             triggers = []
 
-            # 1. Turnover floor
-            if avg_to is not None and avg_to >= profile.avg_turnover_20d_min_inr:
-                flags_count += 1
 
             # 2. Volume multiple
             if vol_m is not None and vol_m >= profile.volume_multiple_min:
@@ -164,12 +170,8 @@ class ShadowCandidateEngine:
                 triggers.append(f"Breakout (+{ret_pct:.1f}%, Vol {vol_m:.2f}x)")
 
             # Check qualification
-            is_qualifying = (
-                avg_to is not None
-                and avg_to >= profile.avg_turnover_20d_min_inr
-                and flags_count >= profile.min_concurrent_flags
-                and len(triggers) >= 1
-            )
+            flags_count = len(triggers)
+            is_qualifying = bool(meets_liquidity_floor and flags_count >= profile.min_concurrent_flags)
 
             primary_trigger = triggers[0] if triggers else "None"
             trigger_detail = "; ".join(triggers)

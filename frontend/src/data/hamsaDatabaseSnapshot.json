@@ -59974,7 +59974,17 @@
         "listingStatus": "active",
         "effectiveListingDate": "2015-01-01"
       },
-      "priceData": [],
+      "priceData": [
+        {
+          "tradeDate": "2026-11-09",
+          "open": 375.0,
+          "high": 382.5,
+          "low": 368.35,
+          "close": 376.25,
+          "volume": 66641,
+          "turnoverCr": 2.49
+        }
+      ],
       "financials": [
         {
           "periodEnd": "2024-03-31",
@@ -90943,6 +90953,48 @@
         }
       ],
       "researchNotes": [
+        {
+          "id": "note-10c36d14daa54dd0bae1dda3b918d78f",
+          "date": "2026-11-25",
+          "author": "hamsa-operator",
+          "thesis": "Unit test research thesis",
+          "evidenceLocator": "unit-test"
+        },
+        {
+          "id": "note-a595259a078148b9a6d1c913a12ca3dc",
+          "date": "2026-11-25",
+          "author": "hamsa-operator",
+          "thesis": "Unit test research thesis",
+          "evidenceLocator": "unit-test"
+        },
+        {
+          "id": "note-6db8f2def0be44c9bf2c80291495bbe6",
+          "date": "2026-11-25",
+          "author": "hamsa-operator",
+          "thesis": "Unit test research thesis",
+          "evidenceLocator": "unit-test"
+        },
+        {
+          "id": "note-958fafb3605f4ce9aaa5acdc9006341a",
+          "date": "2026-11-25",
+          "author": "hamsa-operator",
+          "thesis": "Unit test research thesis",
+          "evidenceLocator": "unit-test"
+        },
+        {
+          "id": "note-3763f7384ea54456996da4aca80a3b22",
+          "date": "2026-11-25",
+          "author": "hamsa-operator",
+          "thesis": "Unit test research thesis",
+          "evidenceLocator": "unit-test"
+        },
+        {
+          "id": "note-6905bde409c84c0a9946124e8e2bb760",
+          "date": "2026-11-25",
+          "author": "hamsa-operator",
+          "thesis": "Unit test research thesis",
+          "evidenceLocator": "unit-test"
+        },
         {
           "id": "note-5549a3430c894b6881cd2a0b3be463c6",
           "date": "2026-11-25",
@@ -138596,12 +138648,12 @@
     "status": "healthy",
     "server": "HAMSA Analytical REST Server",
     "databaseVersion": "DuckDB 2.0.0",
-    "schemaVersion": 7,
+    "schemaVersion": 8,
     "duckdbSizeBytes": 95956992,
-    "sqliteSizeBytes": 143360,
+    "sqliteSizeBytes": 159744,
     "totalFinancialObservations": 14418,
-    "totalEodPrices": 14924,
-    "totalDeliveryRecords": 8431,
+    "totalEodPrices": 14925,
+    "totalDeliveryRecords": 8441,
     "activeSessions": 670,
     "admittedIssuers": 41,
     "pitCutoffHour": "15:30 Asia/Kolkata",
