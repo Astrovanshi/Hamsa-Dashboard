@@ -39,6 +39,7 @@ if str(ROOT / "src") not in sys.path:
 from hamsa.dossiers.repository import DossierReviewRepository
 from hamsa.ingestion.raw_archive import archive_approved_source
 from hamsa.screening.tiered_universe import TieredUniverseManager
+from hamsa.screening.shadow_brief import ShadowCandidateEngine, DailyBriefGenerator, SHADOW_PROFILES
 from hamsa.storage.duckdb_repository import DuckDBRepository
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -373,16 +374,22 @@ class DailyNseBhavdataPipeline:
         )
         logger.info(f"Downstream Trigger: Calculated {signals_calc} Tier 1 radar signals")
 
-        # 6. Downstream Trigger: Scan & Promote Candidates to Tier 2
+        # 6. Downstream Trigger: Scan & Promote Production Candidates to Tier 2
         promoted_candidates = mgr.scan_and_promote_candidates(
             trade_date=target_date,
             auto_acquire_fundamentals=True,
         )
         logger.info(f"Downstream Trigger: Promoted {len(promoted_candidates)} candidates to Tier 2")
 
-        # 7. Generate Daily Market Intelligence Brief
-        brief = self._generate_daily_brief(target_date, val_result, signals_calc, promoted_candidates)
-        logger.info(f"Daily Intelligence Brief Generated:\n{brief['summary']}")
+        # 7. Downstream Trigger: Evaluate Shadow Candidates under Versioned Profile
+        shadow_engine = ShadowCandidateEngine(self.repo)
+        shadow_candidates = shadow_engine.evaluate_session(target_date, profile=SHADOW_PROFILES["shadow-v1.0"])
+        logger.info(f"Downstream Trigger: Generated {len(shadow_candidates)} shadow candidates under shadow-v1.0")
+
+        # 8. Downstream Trigger: Generate & Persist Structured Daily Intelligence Brief
+        brief_gen = DailyBriefGenerator(self.repo, self.dossier_repo)
+        brief = brief_gen.build_and_persist_brief(target_date, shadow_candidates)
+        logger.info(f"Daily Intelligence Brief Generated & Persisted:\n{brief['text_summary']}")
 
         return {
             "status": "success",

@@ -394,6 +394,66 @@ class HamsaServer:
             )
         return result
 
+    def get_daily_brief(self, date_str: str = "2026-11-09") -> dict:
+        repo, reviews = self._get_context()
+        target_d = date.fromisoformat(date_str)
+        row = repo._connection.execute(
+            """
+            SELECT market_regime, breadth_ratio, advancers_count, decliners_count,
+                   total_turnover_cr, high_importance_events_json, absorption_watch_json,
+                   momentum_expansion_json, new_shadow_candidates_json
+            FROM daily_market_intelligence_brief
+            WHERE trade_date=?
+        """,
+            [target_d],
+        ).fetchone()
+
+        if not row:
+            from hamsa.screening.shadow_brief import DailyBriefGenerator
+            brief_gen = DailyBriefGenerator(repo, reviews)
+            return brief_gen.build_and_persist_brief(target_d, [])
+
+        return {
+            "trade_date": date_str,
+            "market_regime": row[0],
+            "breadth_ratio": float(row[1]),
+            "advancers": row[2],
+            "decliners": row[3],
+            "total_turnover_cr": float(row[4]),
+            "high_importance_events": json.loads(row[5] or "[]"),
+            "absorption_watch": json.loads(row[6] or "[]"),
+            "momentum_expansion": json.loads(row[7] or "[]"),
+            "new_shadow_candidates": json.loads(row[8] or "[]"),
+        }
+
+    def get_shadow_candidates(self, date_str: str = "2026-11-09", profile: str = "shadow-v1.0") -> list[dict]:
+        repo, reviews = self._get_context()
+        target_d = date.fromisoformat(date_str)
+        rows = repo._connection.execute(
+            """
+            SELECT eq.issuer_entity_id, r.symbol, n.legal_name, s.primary_trigger,
+                   s.trigger_detail, s.supporting_measurements_json
+            FROM shadow_candidate_evaluation s
+            JOIN exchange_listing l ON l.listing_id=s.listing_id
+            JOIN equity_security eq ON eq.security_id=l.security_id
+            JOIN issuer_name_revision n ON n.entity_id=eq.issuer_entity_id
+            JOIN exchange_listing_revision r ON r.listing_id=l.listing_id
+            WHERE s.trade_date=? AND s.profile_version=? AND s.is_qualifying=TRUE
+        """,
+            [target_d, profile],
+        ).fetchall()
+
+        return [
+            {
+                "entity_id": r[0],
+                "symbol": r[1],
+                "company_name": r[2],
+                "primary_trigger": r[3],
+                "trigger_detail": r[4],
+                "measurements": json.loads(r[5] or "{}"),
+            }
+            for r in rows
+        ]
     def get_tier_breakdown(self) -> dict:
         repo, reviews = self._get_context()
         mgr = TieredUniverseManager(repo, reviews)
@@ -587,6 +647,15 @@ def make_handler(hamsa_backend: HamsaServer):
                     self._respond_json(HTTPStatus.OK, found)
                 else:
                     self._respond_json(HTTPStatus.NOT_FOUND, {"error": f"Company {symbol} not found"})
+            elif path == "/api/brief":
+                date_param = params.get("date", ["2026-11-09"])[0]
+                body = hamsa_backend.get_daily_brief(date_param)
+                self._respond_json(HTTPStatus.OK, body)
+            elif path == "/api/shadow-candidates":
+                date_param = params.get("date", ["2026-11-09"])[0]
+                prof_param = params.get("profile", ["shadow-v1.0"])[0]
+                body = hamsa_backend.get_shadow_candidates(date_param, prof_param)
+                self._respond_json(HTTPStatus.OK, body)
             elif path == "/api/tiers":
                 body = hamsa_backend.get_tier_breakdown()
                 self._respond_json(HTTPStatus.OK, body)

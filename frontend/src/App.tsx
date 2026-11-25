@@ -6,6 +6,7 @@ import { EngineWorkbenchPage } from '@/pages/EngineWorkbenchPage';
 import { CompanyDossierPage } from '@/pages/CompanyDossierPage';
 import { Hamsa11Page, WatchlistsPage, DiscoveryFeedPage, DataCoveragePage, SystemHealthPage } from '@/pages/OtherPages';
 import { UniverseLifecyclePage } from '@/pages/UniverseLifecyclePage';
+import { DailyBriefPage } from '@/pages/DailyBriefPage';
 import { EngineType } from '@/types';
 
 export const App: React.FC = () => {

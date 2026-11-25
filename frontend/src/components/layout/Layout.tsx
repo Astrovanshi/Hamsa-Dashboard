@@ -65,6 +65,7 @@ export const Layout: React.FC<LayoutProps> = ({ currentTab, onSelectTab, childre
         { id: 'company-dossier', label: 'Company Dossier', icon: FileText },
         { id: 'hamsa-11', label: 'HAMSA 11 Framework', icon: Layers },
         { id: 'watchlists', label: 'Watchlists & Theses', icon: Bookmark },
+        { id: 'daily-brief', label: 'Daily Market Brief', icon: FileText, badge: 'DAILY EOD' },
         { id: 'discovery-feed', label: 'Discovery Feed', icon: Radio },
       ],
     },

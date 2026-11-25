@@ -24,14 +24,15 @@ class RepositoryIntegrityError(ValueError):
 
 class DuckDBRepository:
     SCHEMA_NAME = "hamsa_analytics"
-    SCHEMA_VERSION = 7
+    SCHEMA_VERSION = 8
     BASELINE_MIGRATION = "0001_initial_analytics"
     V2_MIGRATION = "0002_ingestion_processing"
     V3_MIGRATION = "0003_listing_classification_and_eod_reconciliation"
     V4_MIGRATION = "0004_identifier_revision_review"
     V5_MIGRATION = "0005_identifier_review_actor_type"
     V6_MIGRATION = "0006_preserve_traceable_legacy_rejections"
-    CURRENT_MIGRATION = "0007_tiered_universe_and_lifecycle"
+    V7_MIGRATION = "0007_tiered_universe_and_lifecycle"
+    CURRENT_MIGRATION = "0008_shadow_candidates_and_brief"
     # This is the checksum of the shipped v1 baseline, not of the current
     # schema file.  It must remain stable so an existing v1 database can be
     # verified and migrated rather than rejected after later DDL is added.
@@ -79,7 +80,8 @@ class DuckDBRepository:
             4: self.V4_MIGRATION,
             5: self.V5_MIGRATION,
             6: self.V6_MIGRATION,
-            7: self.CURRENT_MIGRATION,
+            7: self.V7_MIGRATION,
+            8: self.CURRENT_MIGRATION,
         }.get(version)
         if expected_migration is None or migration != expected_migration:
             raise RepositoryIntegrityError(
@@ -158,9 +160,20 @@ class DuckDBRepository:
             [self.SCHEMA_NAME],
         ).fetchone()
         self._apply_or_verify_migration(
-            migration_id=self.CURRENT_MIGRATION,
+            migration_id=self.V7_MIGRATION,
             from_version=6,
             to_version=7,
+            current_version=version,
+            current_migration=migration,
+        )
+        version, migration = self._connection.execute(
+            "SELECT current_version,current_migration FROM schema_metadata WHERE schema_name=?",
+            [self.SCHEMA_NAME],
+        ).fetchone()
+        self._apply_or_verify_migration(
+            migration_id=self.CURRENT_MIGRATION,
+            from_version=7,
+            to_version=8,
             current_version=version,
             current_migration=migration,
         )

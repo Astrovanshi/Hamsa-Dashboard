@@ -6,7 +6,7 @@ Usage:
 
 import argparse
 import sys
-from datetime import date, datetime
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -53,7 +53,8 @@ def main():
         print(f"Signals Computed: {res.get('signals_calculated', 0):,}")
         print(f"New Candidates:   {res.get('candidates_promoted', 0):,}")
         if res.get("brief"):
-            print(f"\n{res['brief']['summary']}")
+            txt = res["brief"].get("text_summary") or res["brief"].get("summary")
+            print(f"\n{txt}")
     finally:
         reviews.close()
         repo.close()
