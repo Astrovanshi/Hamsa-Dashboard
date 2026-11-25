@@ -160,9 +160,9 @@ export const DataCoveragePage: React.FC = () => {
   return (
     <div className="space-y-6 font-mono">
       <div className="border-b border-[#1b2230] pb-4">
-        <h2 className="text-lg font-bold text-[#f0f6fc]">Admitted Equity Pilot Coverage Matrix (31 Securities)</h2>
+        <h2 className="text-lg font-bold text-[#f0f6fc]">Admitted Equity Coverage Matrix (40 Securities)</h2>
         <p className="text-xs text-[#526079]">
-          Audit grid verifying historical filing depth, EOD price continuity, and exchange classification for the 31 admitted pilot equities. Note: Full NSE/BSE universe expansion is in progress.
+          Audit grid verifying historical filing depth, EOD price continuity, and exchange classification for the 40 admitted mainboard equities. Note: Full NSE/BSE universe expansion is in progress.
         </p>
       </div>
 

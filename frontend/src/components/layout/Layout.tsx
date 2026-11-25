@@ -190,7 +190,7 @@ export const Layout: React.FC<LayoutProps> = ({ currentTab, onSelectTab, childre
             </span>
             <span className="text-[11px] text-[#526079]">|</span>
             <span className="text-[11px] text-[#526079] font-mono">
-              COVERAGE SAMPLE: <strong className="text-[#f0f6fc]">31 ADMITTED PILOT EQUITIES</strong> <span className="text-[#526079] text-[10px]">(INDIAN MAINBOARD EXPANSION IN PROGRESS)</span>
+              COVERAGE UNIVERSE: <strong className="text-[#f0f6fc]">40 ADMITTED MAINBOARD EQUITIES</strong> <span className="text-[#526079] text-[10px]">(INDIAN MAINBOARD EXPANSION IN PROGRESS)</span>
             </span>
           </div>
 
