@@ -143,12 +143,10 @@ class ShadowCandidateEngine:
 
             # 2. Volume multiple
             if vol_m is not None and vol_m >= profile.volume_multiple_min:
-                flags_count += 1
                 triggers.append(f"Vol {vol_m:.2f}x (>= {profile.volume_multiple_min}x)")
 
             # 3. Delivery expansion
             if del_chg is not None and del_chg >= profile.delivery_chg_pp_min:
-                flags_count += 1
                 triggers.append(f"Deliv Chg +{del_chg:.1f}pp (>= +{profile.delivery_chg_pp_min}pp)")
 
             # 4. Absorption condition
@@ -161,12 +159,10 @@ class ShadowCandidateEngine:
                 and close_pos >= profile.close_range_pos_min
             )
             if is_absorb:
-                flags_count += 1
                 triggers.append(f"Absorption (DD {dd_pct:.1f}%, ClosePos {close_pos:.2f})")
 
             # 5. Breakout condition
             if is_bo:
-                flags_count += 1
                 triggers.append(f"Breakout (+{ret_pct:.1f}%, Vol {vol_m:.2f}x)")
 
             # Check qualification

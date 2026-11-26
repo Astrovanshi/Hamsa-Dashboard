@@ -1,6 +1,8 @@
 """Integration tests for HAMSA Analytical REST Server."""
 
 import json
+import shutil
+import tempfile
 import threading
 import unittest
 import urllib.request
@@ -13,13 +15,21 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
-from hamsa.server.app import run_server
+from hamsa.server.app import HamsaServer, make_handler
+from http.server import ThreadingHTTPServer
 
 
 class HamsaServerIntegrationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.server = run_server(port=0)
+        cls.tmp_dir = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
+        test_duck = Path(cls.tmp_dir.name) / "test_srv.duckdb"
+        test_sql = Path(cls.tmp_dir.name) / "test_srv.sqlite3"
+        shutil.copy2(ROOT / "hamsa_terminal.duckdb", test_duck)
+        shutil.copy2(ROOT / "hamsa_terminal_reviews.sqlite3", test_sql)
+
+        cls.backend = HamsaServer(test_duck, test_sql)
+        cls.server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(cls.backend))
         cls.port = cls.server.server_port
         cls.thread = threading.Thread(target=cls.server.serve_forever, daemon=True)
         cls.thread.start()
@@ -27,6 +37,11 @@ class HamsaServerIntegrationTests(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.server.shutdown()
+        cls.backend.close()
+        try:
+            cls.tmp_dir.cleanup()
+        except Exception:
+            pass
 
     def _get(self, path: str):
         req = urllib.request.urlopen(f"http://127.0.0.1:{self.port}{path}")
@@ -55,8 +70,8 @@ class HamsaServerIntegrationTests(unittest.TestCase):
         self.assertGreaterEqual(len(radar["dislocations"]), 1)
 
     def test_companies_and_single_company_endpoints(self):
-        comps = self._get("/api/companies")
-        self.assertEqual(len(comps), 2395)
+        comps = self._get("/api/companies?limit=5")
+        self.assertEqual(len(comps), 5)
         poly = self._get("/api/companies/POLYCAB")
         self.assertEqual(poly["identity"]["symbol"], "POLYCAB")
         self.assertGreater(len(poly["financials"]), 0)

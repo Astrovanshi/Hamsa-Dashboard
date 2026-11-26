@@ -149,6 +149,7 @@ class HamsaServer:
 
     def get_companies(
         self,
+        limit: int | None = None,
         exchange: str = "NSE",
         session_d: date = date(2026, 11, 9),
         cal_ver: str = "nse-2026-v1",
@@ -160,12 +161,10 @@ class HamsaServer:
             unusual_volume_multiple=Decimal("0.5"),
             unusual_delivery_percentage_points=Decimal("1.0"),
         )
-        entities = [
-            r[0]
-            for r in repo._connection.execute(
-                "SELECT entity_id FROM issuer_entity ORDER BY entity_id"
-            ).fetchall()
-        ]
+        query = "SELECT entity_id FROM issuer_entity ORDER BY entity_id"
+        if limit is not None:
+            query += f" LIMIT {limit}"
+        entities = [r[0] for r in repo._connection.execute(query).fetchall()]
         result = []
         for ent in entities:
             cin = company_input_as_of(
@@ -650,7 +649,8 @@ def make_handler(hamsa_backend: HamsaServer):
                 body = hamsa_backend.get_market_radar()
                 self._respond_json(HTTPStatus.OK, body)
             elif path == "/api/companies":
-                body = hamsa_backend.get_companies()
+                limit_p = int(params.get("limit", [0])[0]) if "limit" in params else None
+                body = hamsa_backend.get_companies(limit=limit_p)
                 self._respond_json(HTTPStatus.OK, body)
             elif path.startswith("/api/companies/"):
                 symbol = path.split("/")[-1].upper()
