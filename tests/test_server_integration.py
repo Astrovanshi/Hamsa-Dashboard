@@ -60,7 +60,7 @@ class HamsaServerIntegrationTests(unittest.TestCase):
     def test_health_endpoint(self):
         data = self._get("/health")
         self.assertEqual(data["status"], "healthy")
-        self.assertEqual(data["schemaVersion"], 9)
+        self.assertEqual(data["schemaVersion"], 10)
         self.assertEqual(data["admittedIssuers"], 2395)
 
     def test_market_radar_endpoint(self):

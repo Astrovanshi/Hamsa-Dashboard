@@ -24,7 +24,7 @@ class RepositoryIntegrityError(ValueError):
 
 class DuckDBRepository:
     SCHEMA_NAME = "hamsa_analytics"
-    SCHEMA_VERSION = 9
+    SCHEMA_VERSION = 10
     BASELINE_MIGRATION = "0001_initial_analytics"
     V2_MIGRATION = "0002_ingestion_processing"
     V3_MIGRATION = "0003_listing_classification_and_eod_reconciliation"
@@ -33,7 +33,8 @@ class DuckDBRepository:
     V6_MIGRATION = "0006_preserve_traceable_legacy_rejections"
     V7_MIGRATION = "0007_tiered_universe_and_lifecycle"
     V8_MIGRATION = "0008_shadow_candidates_and_brief"
-    CURRENT_MIGRATION = "0009_full_universe_registry"
+    V9_MIGRATION = "0009_full_universe_registry"
+    CURRENT_MIGRATION = "0010_empirical_observation_ledger"
     # This is the checksum of the shipped v1 baseline, not of the current
     # schema file.  It must remain stable so an existing v1 database can be
     # verified and migrated rather than rejected after later DDL is added.
@@ -83,7 +84,8 @@ class DuckDBRepository:
             6: self.V6_MIGRATION,
             7: self.V7_MIGRATION,
             8: self.V8_MIGRATION,
-            9: self.CURRENT_MIGRATION,
+            9: self.V9_MIGRATION,
+            10: self.CURRENT_MIGRATION,
         }.get(version)
         if expected_migration is None or migration != expected_migration:
             raise RepositoryIntegrityError(
@@ -184,9 +186,20 @@ class DuckDBRepository:
             [self.SCHEMA_NAME],
         ).fetchone()
         self._apply_or_verify_migration(
-            migration_id=self.CURRENT_MIGRATION,
+            migration_id=self.V9_MIGRATION,
             from_version=8,
             to_version=9,
+            current_version=version,
+            current_migration=migration,
+        )
+        version, migration = self._connection.execute(
+            "SELECT current_version,current_migration FROM schema_metadata WHERE schema_name=?",
+            [self.SCHEMA_NAME],
+        ).fetchone()
+        self._apply_or_verify_migration(
+            migration_id=self.CURRENT_MIGRATION,
+            from_version=9,
+            to_version=10,
             current_version=version,
             current_migration=migration,
         )
