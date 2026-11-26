@@ -114,10 +114,10 @@ export const DailyBriefPage: React.FC<DailyBriefProps> = ({ onSelectCompany }) =
         </div>
 
         <div className="bg-[#0d1117] border border-[#1b2230] p-3.5 rounded">
-          <div className="text-[11px] text-[#526079]">BREADTH RATIO (A/D)</div>
+          <div className="text-[11px] text-[#526079]">FOCUS LIST BREADTH RATIO (A/D)</div>
           <div className="text-lg font-bold text-amber-400 mt-1">{brief.breadth_ratio}x</div>
           <div className="text-[10px] text-[#526079] mt-1">
-            {brief.advancers} Advancers / {brief.decliners} Decliners
+            {brief.advancers} Adv / {brief.decliners} Dec (Focus Sample)
           </div>
         </div>
 
