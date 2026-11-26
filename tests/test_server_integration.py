@@ -16,7 +16,7 @@ if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
 from hamsa.server.app import HamsaServer, make_handler
-from http.server import ThreadingHTTPServer
+from http.server import HTTPServer
 
 
 class HamsaServerIntegrationTests(unittest.TestCase):
@@ -29,7 +29,7 @@ class HamsaServerIntegrationTests(unittest.TestCase):
         shutil.copy2(ROOT / "hamsa_terminal_reviews.sqlite3", test_sql)
 
         cls.backend = HamsaServer(test_duck, test_sql)
-        cls.server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(cls.backend))
+        cls.server = HTTPServer(("127.0.0.1", 0), make_handler(cls.backend))
         cls.port = cls.server.server_port
         cls.thread = threading.Thread(target=cls.server.serve_forever, daemon=True)
         cls.thread.start()

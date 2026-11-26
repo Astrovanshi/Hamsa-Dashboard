@@ -40,6 +40,7 @@ from hamsa.dossiers.repository import DossierReviewRepository
 from hamsa.ingestion.raw_archive import archive_approved_source
 from hamsa.screening.tiered_universe import TieredUniverseManager
 from hamsa.screening.shadow_brief import ShadowCandidateEngine, DailyBriefGenerator, SHADOW_PROFILES
+from hamsa.screening.empirical_observation import EmpiricalObservationEngine
 from hamsa.storage.duckdb_repository import DuckDBRepository
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -381,6 +382,14 @@ class DailyNseBhavdataPipeline:
         )
         logger.info(f"Downstream Trigger: Promoted {len(promoted_candidates)} candidates to Tier 2")
 
+        # 6b. Downstream Trigger: Extract & Persist Market Events into Empirical Observation Ledger
+        emp_engine = EmpiricalObservationEngine(self.repo)
+        emp_events = emp_engine.extract_and_record_session_events(target_date)
+        logger.info(f"Downstream Trigger: Extracted and recorded {len(emp_events)} market events")
+
+        # 6c. Downstream Trigger: Catch Up All Matured Outcomes Across Historical Events
+        outcome_summary = emp_engine.catch_up_matured_outcomes(horizons=(1, 3, 5, 10, 20, 60))
+        logger.info(f"Downstream Trigger: Outcome catch-up finished ({outcome_summary})")
         # 7. Downstream Trigger: Evaluate Shadow Candidates under Versioned Profile
         shadow_engine = ShadowCandidateEngine(self.repo)
         shadow_candidates = shadow_engine.evaluate_session(target_date, profile=SHADOW_PROFILES["shadow-v1.0"])

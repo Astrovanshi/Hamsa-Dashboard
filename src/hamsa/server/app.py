@@ -759,7 +759,7 @@ def make_handler(hamsa_backend: HamsaServer):
     return HamsaRequestHandler
 
 
-def run_server(host: str = "127.0.0.1", port: int = 8080) -> ThreadingHTTPServer:
+def run_server(host: str = "127.0.0.1", port: int = 8080) -> HTTPServer:
     default_duck = (
         ROOT / "hamsa_terminal.duckdb"
         if (ROOT / "hamsa_terminal.duckdb").is_file()
@@ -776,7 +776,7 @@ def run_server(host: str = "127.0.0.1", port: int = 8080) -> ThreadingHTTPServer
 
     backend = HamsaServer(duck_path, rev_path)
     handler_cls = make_handler(backend)
-    server = ThreadingHTTPServer((host, port), handler_cls)
+    server = HTTPServer((host, port), handler_cls)
     return server
 
 

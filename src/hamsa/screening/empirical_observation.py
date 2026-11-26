@@ -277,6 +277,35 @@ class EmpiricalObservationEngine:
 
         return outcomes
 
+    def catch_up_matured_outcomes(
+        self,
+        horizons: Sequence[int] = (1, 3, 5, 10, 20, 60),
+    ) -> dict[str, int]:
+        """Scan all PENDING or un-evaluated outcomes in the ledger and evaluate any whose forward horizon has matured."""
+        events = self.con.execute(
+            """
+            SELECT DISTINCT event_id, trade_date
+            FROM market_event_observation_ledger
+            ORDER BY trade_date ASC
+        """
+        ).fetchall()
+
+        summary = {"total_checked": 0, "evaluated": 0, "still_pending": 0}
+
+        for ev_id, t_date in events:
+            summary["total_checked"] += 1
+            outs = self.track_forward_outcomes(ev_id, horizons=horizons)
+            for o in outs:
+                if o["status"] == "EVALUATED":
+                    summary["evaluated"] += 1
+                elif o["status"] == "PENDING":
+                    summary["still_pending"] += 1
+
+        logger.info(
+            f"Matured Outcome Catch-up Complete: Checked {summary['total_checked']} events, "
+            f"Evaluated {summary['evaluated']} horizons, {summary['still_pending']} remain PENDING"
+        )
+        return summary
     def append_journal_entry(
         self,
         *,
