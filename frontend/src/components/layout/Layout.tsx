@@ -192,7 +192,7 @@ export const Layout: React.FC<LayoutProps> = ({ currentTab, onSelectTab, childre
             </span>
             <span className="text-[11px] text-[#526079]">|</span>
             <span className="text-[11px] text-[#526079] font-mono">
-              COVERAGE UNIVERSE: <strong className="text-[#f0f6fc]">40 ADMITTED MAINBOARD EQUITIES</strong> <span className="text-[#526079] text-[10px]">(INDIAN MAINBOARD EXPANSION IN PROGRESS)</span>
+              ELIGIBLE UNIVERSE: <strong className="text-[#f0f6fc]">2,643 ORDINARY EQUITIES</strong> <span className="text-[#526079] text-[10px]">(2,356 RADAR READY | 41 T2 CANDIDATES)</span> <span className="text-[#526079] text-[10px]">(INDIAN MAINBOARD EXPANSION IN PROGRESS)</span>
             </span>
           </div>
 

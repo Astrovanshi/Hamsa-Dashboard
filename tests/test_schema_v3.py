@@ -114,7 +114,8 @@ class SchemaV3MigrationTests(TestCase):
                 (repo.V5_MIGRATION, 4, 5),
                 (repo.V6_MIGRATION, 5, 6),
                 (repo.V7_MIGRATION, 6, 7),
-                (repo.CURRENT_MIGRATION, 7, 8),
+                (repo.V8_MIGRATION, 7, 8),
+                (repo.CURRENT_MIGRATION, 8, 9),
             ])
             self.assertEqual(repo._connection.execute(
                 "SELECT count(*) FROM information_schema.tables WHERE table_name IN "
@@ -193,7 +194,7 @@ class SchemaV3MigrationTests(TestCase):
             con.close()
 
             with DuckDBRepository(db) as repo:
-                self.assertEqual(repo._connection.execute("SELECT current_version FROM schema_metadata").fetchone()[0], 8)
+                self.assertEqual(repo._connection.execute("SELECT current_version FROM schema_metadata").fetchone()[0], 9)
                 rows = repo._connection.execute(
                     "SELECT identifier_revision_id,review_status,reviewed_by,CAST(reviewed_at AS VARCHAR) "
                     "FROM security_identifier_revision_review ORDER BY identifier_revision_id"

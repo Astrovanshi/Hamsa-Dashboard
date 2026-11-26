@@ -251,8 +251,16 @@ class DailyBriefGenerator:
             FROM security_radar_signal_daily s
             JOIN exchange_listing l ON l.listing_id=s.listing_id
             JOIN equity_security eq ON eq.security_id=l.security_id
-            JOIN issuer_name_revision n ON n.entity_id=eq.issuer_entity_id
-            JOIN exchange_listing_revision r ON r.listing_id=l.listing_id
+            JOIN (
+                SELECT entity_id, legal_name,
+                       row_number() OVER (PARTITION BY entity_id ORDER BY effective_from DESC) as rn
+                FROM issuer_name_revision
+            ) n ON n.entity_id=eq.issuer_entity_id AND n.rn=1
+            JOIN (
+                SELECT listing_id, symbol,
+                       row_number() OVER (PARTITION BY listing_id ORDER BY effective_from DESC) as rn
+                FROM exchange_listing_revision WHERE status='active'
+            ) r ON r.listing_id=l.listing_id AND r.rn=1
             WHERE s.trade_date=?
         """,
             [trade_date],

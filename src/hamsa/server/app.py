@@ -220,7 +220,7 @@ class HamsaServer:
                 """
                 SELECT trade_date, open_raw, high_raw, low_raw, close_raw, volume_raw, turnover_raw
                 FROM eod_price_observation_revision
-                WHERE listing_id=(SELECT listing_id FROM exchange_listing WHERE security_id=(SELECT security_id FROM equity_security WHERE issuer_entity_id=?) AND exchange='NSE')
+                WHERE listing_id IN (SELECT l.listing_id FROM exchange_listing l JOIN equity_security eq ON eq.security_id=l.security_id WHERE eq.issuer_entity_id=? AND l.exchange='NSE')
                 ORDER BY trade_date DESC LIMIT 30
             """,
                 [ent],
@@ -454,6 +454,26 @@ class HamsaServer:
             }
             for r in rows
         ]
+    def get_universe_stats(self) -> dict:
+        repo, reviews = self._get_context()
+        con = repo._connection
+
+        total_master = con.execute("SELECT count(*) FROM security_universe_registry").fetchone()[0]
+        states = dict(con.execute("SELECT operational_state, count(*) FROM security_universe_registry GROUP BY operational_state").fetchall())
+        liquidity = dict(con.execute("SELECT liquidity_tier, count(*) FROM security_historical_coverage WHERE rolling_20d_ready=TRUE GROUP BY liquidity_tier").fetchall())
+        rolling_20d_cnt = con.execute("SELECT count(*) FROM security_historical_coverage WHERE rolling_20d_ready=TRUE").fetchone()[0]
+        rolling_60d_cnt = con.execute("SELECT count(*) FROM security_historical_coverage WHERE rolling_60d_ready=TRUE").fetchone()[0]
+
+        return {
+            "total_master_equities": total_master,
+            "radar_ready": states.get("RADAR_READY", 0),
+            "history_building": states.get("HISTORY_BUILDING", 0),
+            "data_pending": states.get("DATA_PENDING", 0),
+            "excluded": states.get("EXCLUDED", 0),
+            "rolling_20d_ready": rolling_20d_cnt,
+            "rolling_60d_ready": rolling_60d_cnt,
+            "liquidity_breakdown": liquidity,
+        }
     def get_tier_breakdown(self) -> dict:
         repo, reviews = self._get_context()
         mgr = TieredUniverseManager(repo, reviews)
@@ -647,6 +667,9 @@ def make_handler(hamsa_backend: HamsaServer):
                     self._respond_json(HTTPStatus.OK, found)
                 else:
                     self._respond_json(HTTPStatus.NOT_FOUND, {"error": f"Company {symbol} not found"})
+            elif path == "/api/universe":
+                body = hamsa_backend.get_universe_stats()
+                self._respond_json(HTTPStatus.OK, body)
             elif path == "/api/brief":
                 date_param = params.get("date", ["2026-11-09"])[0]
                 body = hamsa_backend.get_daily_brief(date_param)
